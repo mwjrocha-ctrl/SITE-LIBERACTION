@@ -25,7 +25,6 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
       {title:'Execução',body:'Coordenação da implementação e dos profissionais envolvidos.'},
       {title:'Operação',body:'Acompanhamento até a estrutura funcionar na prática.'}
     ],
-    partners:['Panama Legal Group','Contilize','Settee','Livecoins','Rad Capital'],
     integrationItems:['Uma mudança de residência fiscal pode alterar a tributação.','A tributação pode mudar a estrutura ideal.','A estrutura pode mudar a forma de movimentar o patrimônio.','A movimentação pode depender de bancos, corretoras, exchanges ou ativos digitais.'],
     planningDeliverables:['Planejamento tributário internacional','Residência e saída fiscal','Empresas internacionais','Holdings · IBC · LLC','Foundations · Trusts','Contas bancárias internacionais','Fluxo financeiro','Regularização patrimonial','Criptoativos','Sucessão','Movimentação internacional','Diversificação geográfica'],
     exitPhases:[

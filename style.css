@@ -1512,7 +1512,7 @@ main .section[class*="bg-[#0b0b0c]"]{
   background:linear-gradient(105deg,rgba(85,179,248,.022),rgba(155,140,255,.012),transparent 64%)!important;
 }
 
-/* About / regularization / partners: remove nested opaque cell fills. */
+/* About and regularization: remove nested opaque cell fills. */
 main [class*="bg-white"],
 main [class*="bg-[#0b0b0c]"]{
   background-color:transparent!important;
@@ -2077,46 +2077,13 @@ main .grid.gap-px[class*="bg-white/10"]{
 .about-public-section .about-public-caption strong{font-size:16px}
 .about-public-section .about-public-caption em{font-size:10px}
 
-/* Partner / specialist names should sit directly on the page atmosphere. */
-.partner-rail{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  border-top:1px solid rgba(126,190,238,.14);
-  border-bottom:1px solid rgba(126,190,238,.14);
-  background:transparent!important;
-}
-.partner-item{
-  min-height:96px;
-  display:grid;
-  place-items:center;
-  padding:20px 18px;
-  text-align:center;
-  font-size:12px;
-  font-weight:600;
-  color:#7F8993;
-  background:transparent!important;
-  border-right:1px solid rgba(126,190,238,.10);
-  transition:color .25s ease,background .25s ease;
-}
-.partner-item:last-child{border-right:0}
-@media(hover:hover) and (pointer:fine){
-  .partner-item:hover{color:#E9EDF0;background:rgba(85,179,248,.018)!important}
-}
-
 @media(max-width:1000px){
   .about-public-head{grid-template-columns:1fr;gap:28px}
   .about-public-head>.copy{max-width:700px}
-  .partner-rail{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .partner-item{border-bottom:1px solid rgba(126,190,238,.10)}
-  .partner-item:nth-child(2n){border-right:0}
-  .partner-item:last-child{grid-column:1/-1;border-bottom:0}
 }
 @media(max-width:720px){
   .about-public-section{padding-top:78px!important;padding-bottom:78px!important}
   .about-public-media-standalone{margin-top:44px}
-  .partner-rail{grid-template-columns:1fr}
-  .partner-item{min-height:74px;border-right:0!important;border-bottom:1px solid rgba(126,190,238,.10)}
-  .partner-item:last-child{grid-column:auto;border-bottom:0}
 }
 
 /* ===== V6.35 REAL LOGO ASSET ===== */

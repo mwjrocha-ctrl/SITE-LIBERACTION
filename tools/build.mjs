@@ -31,7 +31,7 @@ const source=await utf8('script.js');
 const footerContact=`<address class="footer-contact"><ul class="footer-contact-list"><li class="footer-contact-item"><i data-lucide="map-pin" aria-hidden="true"></i><a href="https://www.google.com/maps/search/?api=1&query=Torre+Jurer%C3%AA+A+Rod.+Jos%C3%A9+Carlos+Daux+5500+Florian%C3%B3polis" target="_blank" rel="noopener noreferrer">Torre Jurerê A — Rod. José Carlos Daux, 5500 — 2º andar — Saco Grande, Florianópolis — SC, 88032-005</a></li><li class="footer-contact-item"><i data-lucide="message-circle" aria-hidden="true"></i><a href="https://wa.me/5511953448220" target="_blank" rel="noopener noreferrer" aria-label="Conversar com a Liberaction pelo WhatsApp">+55 11 95344-8220</a></li><li class="footer-contact-item"><i data-lucide="instagram" aria-hidden="true"></i><a href="https://www.instagram.com/liberaction_/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Liberaction">@liberaction_</a></li></ul></address>`;
 
 // Bundle only the icons used in HTML and in Alpine's dynamic menus.
-const iconNames=new Set(['menu','x']);
+const iconNames=new Set(['menu','x','map-pin','message-circle','instagram']);
 for(const text of [...documents.values(),source]){
   for(const match of text.matchAll(/(?<!:)data-lucide="([a-z0-9-]+)"|icon:'([a-z0-9-]+)'/g)) iconNames.add(match[1]||match[2]);
 }
@@ -50,7 +50,7 @@ for(const [slug,family,style] of [['inter','Inter','normal'],['plus-jakarta-sans
   await copyFile(`node_modules/@fontsource-variable/${slug}/LICENSE`,`assets/${slug}-LICENSE.txt`);
 }
 const theme={extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Plus Jakarta Sans','sans-serif']},colors:{ink:'#0B0B0C',paper:'#FFFFFF',fog:'#F7F7F5',line:'#E8E8E4',muted:'#6A6A66',blue:'#55B3F8'},boxShadow:{soft:'0 22px 70px rgba(12,12,12,.07)',float:'0 35px 100px rgba(12,12,12,.10)'}}};
-const usedStyles=await postcss([purgecss({content:[...pages,'script.js'],defaultExtractor:content=>content.match(/[^<>"'`\s]*[^<>"'`\s:]/g)||[],safelist:{standard:['html','body','in','active','open','scroll-ink','scroll-word-group','scroll-char',/^lucide/]}})]).process(await utf8('style.css'),{from:'style.css'});
+const usedStyles=await postcss([purgecss({content:[...pages,'script.js'],defaultExtractor:content=>content.match(/[^<>"'`\s]*[^<>"'`\s:]/g)||[],safelist:{standard:['html','body','in','active','open','scroll-ink','scroll-word-group','scroll-char',/^lucide/,/^footer-contact/]}})]).process(await utf8('style.css'),{from:'style.css'});
 const cssInput='@tailwind base;\n@tailwind components;\n'+fonts+usedStyles.css+'\n@tailwind utilities;';
 const css=await postcss([tailwind({content:[...pages,'./script.js'],theme}),cssnano({preset:'default'})]).process(cssInput,{from:undefined});
 const cssPath=await asset('site','css',css.css);
@@ -84,6 +84,9 @@ for(const [path,original] of documents){
     .replace(/\s*<link[^>]+rel="preload"[^>]*>/g,'')
     .replace(/<link rel="stylesheet" href="(?:style\.css|assets\/site\.[^"]+\.css)"\s*\/>/g,`<link rel="preload" href="${fontPaths['plus-jakarta-sans']}" as="font" type="font/woff2" crossorigin />\n  <link rel="preload" href="${fontPaths.inter}" as="font" type="font/woff2" crossorigin />\n  <link rel="stylesheet" href="${cssPath}" />\n  <script defer src="${appPath}"></script>`)
     .replace(/ x-init="init\(\)"/g,'');
+  if(!html.includes('class="footer-contact"')){
+    html=html.replace(/(<p class="mt-4 max-w-sm text-sm leading-7 text-white\/43">[^<]*<\/p>)/,`$1${footerContact}`);
+  }
   for(const [name,svg] of Object.entries(svgPaths)){
     const pattern=new RegExp(`(?:imagens/${name}\\.svg|assets/${name}\\.[a-f0-9]+\\.(?:svg|png))`,'g');
     html=html.replace(pattern,svg);

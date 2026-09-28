@@ -12,6 +12,8 @@ const results=[];
 for(const route of routes){
   await page.goto('http://localhost:8081/pt/'+route,{waitUntil:'networkidle'});
   await page.evaluate(()=>document.fonts.ready);
+  const footerContacts=await page.locator('.footer-contact-item a').count();
+  if(footerContacts!==3)errors.push(`${route||'home'} footer has ${footerContacts} contact links`);
   results.push({route,heading:await page.locator('h1').first().textContent(),icons:await page.locator('svg.lucide').count(),overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)});
   if(route===''){
     if(await page.locator('.background-motion-toggle').count())errors.push('Background motion control is still visible');
@@ -21,6 +23,7 @@ for(const route of routes){
     await page.locator('.signature-statement').scrollIntoViewIfNeeded();
     await page.waitForTimeout(900);
     await page.locator('.signature-statement').screenshot({path:'reports/signature-desktop.png'});
+    await page.locator('footer').screenshot({path:'reports/footer-desktop.png'});
     await page.getByRole('button',{name:'Soluções',exact:true}).hover();
     await page.locator('.solutions-panel').waitFor({state:'visible',timeout:2000}).catch(()=>errors.push('Desktop menu did not open'));
     await page.setViewportSize({width:390,height:844});
