@@ -28,6 +28,7 @@ async function findPages(directory){
 await findPages('pt');
 const documents=new Map(await Promise.all(pages.map(async path=>[path,await utf8(path)])));
 const source=await utf8('script.js');
+const footerContact=`<address class="footer-contact"><ul class="footer-contact-list"><li class="footer-contact-item"><i data-lucide="map-pin" aria-hidden="true"></i><a href="https://www.google.com/maps/search/?api=1&query=Torre+Jurer%C3%AA+A+Rod.+Jos%C3%A9+Carlos+Daux+5500+Florian%C3%B3polis" target="_blank" rel="noopener noreferrer">Torre Jurerê A — Rod. José Carlos Daux, 5500 — 2º andar — Saco Grande, Florianópolis — SC, 88032-005</a></li><li class="footer-contact-item"><i data-lucide="message-circle" aria-hidden="true"></i><a href="https://wa.me/5511953448220" target="_blank" rel="noopener noreferrer" aria-label="Conversar com a Liberaction pelo WhatsApp">+55 11 95344-8220</a></li><li class="footer-contact-item"><i data-lucide="instagram" aria-hidden="true"></i><a href="https://www.instagram.com/liberaction_/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Liberaction">@liberaction_</a></li></ul></address>`;
 
 // Bundle only the icons used in HTML and in Alpine's dynamic menus.
 const iconNames=new Set(['menu','x']);
