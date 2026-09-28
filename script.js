@@ -70,13 +70,23 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
       'Outro'
     ],
     form:{name:'',email:'',whatsapp:'',country:'',subject:'',message:''},
-    submit(){
+    async submit(){
       if(!this.form.subject){
         this.subjectError=true;
         this.subjectOpen=true;
         this.$nextTick(()=>document.querySelector('.contact-select-trigger')?.focus());
         return;
       }
+      this.redirecting=true;
+      
+      const formData=new FormData();
+      formData.append('formType','Contato');
+      for(const key in this.form)formData.append(key,this.form[key]);
+      try{
+        const url='https://script.google.com/macros/s/AKfycbww1cGKQJIaJ-p_PVuVRw8scWioZq8pe0t1Gc0Qu6aZ_tlM0xN6ZZFsiHFluKPYpSgm/exec';
+        if(!url.includes('COLOQUE_SUA_URL')) await fetch(url,{method:'POST',body:formData,mode:'no-cors'});
+      }catch(e){console.error(e);}
+
       const clean=value=>(value||'').toString().trim();
       const message=[
         'Olá! Vim pelo site da Liberaction e gostaria de falar com a equipe.',
@@ -90,13 +100,12 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
         'Mensagem:',
         clean(this.form.message)
       ].join('\n');
-      this.redirecting=true;
-      const url='https://wa.me/5511953448220?text='+encodeURIComponent(message);
-      setTimeout(()=>{ window.location.href=url; },180);
+      const waUrl='https://wa.me/5511953448220?text='+encodeURIComponent(message);
+      setTimeout(()=>{ window.location.href=waUrl; },180);
     }
   }}
 
-  function diagnosticForm(){return{step:1,sent:false,stepTitles:['O que você precisa resolver?','Quem está falando conosco?','Qual é o contexto do patrimônio?'],needs:['Saída fiscal do Brasil','Planejamento tributário internacional','Estrutura offshore','Regularização de criptoativos','Movimentação de patrimônio em criptoativos','Planejamento sucessório','Internacionalização patrimonial','Outro'],form:{need:'',name:'',whatsapp:'',email:'',country:'',assets:'R$ 1 milhão a R$ 3 milhões',message:''},submit(){this.sent=true;setTimeout(()=>this.sent=false,9000)}}}
+  function diagnosticForm(){return{step:1,sending:false,sent:false,stepTitles:['O que você precisa resolver?','Quem está falando conosco?','Qual é o contexto do patrimônio?'],needs:['Saída fiscal do Brasil','Planejamento tributário internacional','Estrutura offshore','Regularização de criptoativos','Movimentação de patrimônio em criptoativos','Planejamento sucessório','Internacionalização patrimonial','Outro'],form:{need:'',name:'',whatsapp:'',email:'',country:'',assets:'R$ 1 milhão a R$ 3 milhões',message:''},async submit(){this.sending=true;const formData=new FormData();formData.append('formType','Diagnóstico');for(const key in this.form)formData.append(key,this.form[key]);try{const url='https://script.google.com/macros/s/AKfycbww1cGKQJIaJ-p_PVuVRw8scWioZq8pe0t1Gc0Qu6aZ_tlM0xN6ZZFsiHFluKPYpSgm/exec';if(url.includes('COLOQUE_SUA_URL'))console.warn('URL do Google Sheets não configurada.');else await fetch(url,{method:'POST',body:formData,mode:'no-cors'});this.sent=true;}catch(e){console.error(e);this.sent=true;}finally{this.sending=false;setTimeout(()=>this.sent=false,9000);}}}}
 
   const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revealObserver.unobserve(e.target)}}),{threshold:.12});
   function initReveals(){
