@@ -2386,6 +2386,35 @@ main .grid.gap-px[class*="bg-white/10"]{
   .signature-statement p{font-size:clamp(1.65rem,7.5vw,2.25rem);line-height:1.3;letter-spacing:-.04em}
 }
 
+/* Benefits at the start of the home page. */
+.client-benefits{border-bottom:1px solid rgba(126,190,238,.13)}
+.client-benefits-heading{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:48px;align-items:end;margin-bottom:44px}
+.client-benefits-heading .copy{max-width:460px;justify-self:end}
+.client-benefits-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(126,190,238,.18)}
+.client-benefit{padding:28px 30px 32px;border-bottom:1px solid rgba(126,190,238,.14);border-right:1px solid rgba(126,190,238,.14);background:linear-gradient(135deg,rgba(85,179,248,.025),transparent 65%)}
+.client-benefit:nth-child(3n){border-right:0}
+.client-benefit-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;color:#8cccf5}
+.client-benefit-top span{font:600 10px/1 'Inter',sans-serif;letter-spacing:.14em;color:#8498a9}
+.client-benefit-top svg{width:24px;height:24px;stroke-width:1.5}
+.client-benefit h3{max-width:310px;margin:0;color:#f2f6fa;font:700 clamp(1.2rem,1.65vw,1.5rem)/1.22 'Plus Jakarta Sans',sans-serif;letter-spacing:-.035em}
+.client-benefit p{max-width:340px;margin:14px 0 0;color:#a0acb8;font:400 14px/1.75 'Inter',sans-serif}
+.client-benefits-action{display:flex;justify-content:center;margin-top:34px}
+@media(max-width:1000px){
+  .client-benefits-heading{grid-template-columns:1fr;gap:22px}
+  .client-benefits-heading .copy{justify-self:start;max-width:600px}
+  .client-benefits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .client-benefit:nth-child(3n){border-right:1px solid rgba(126,190,238,.14)}
+  .client-benefit:nth-child(2n){border-right:0}
+}
+@media(max-width:600px){
+  .client-benefits-heading{margin-bottom:32px}
+  .client-benefits-grid{grid-template-columns:1fr}
+  .client-benefit,.client-benefit:nth-child(3n){padding:26px 0 28px;border-right:0}
+  .client-benefit-top{margin-bottom:16px}
+  .client-benefit h3,.client-benefit p{max-width:none}
+  .client-benefits-action .button-dark{width:100%}
+}
+
 /* Office and direct contact details shared by every footer. */
 .footer-contact{margin-top:24px;max-width:440px;font-style:normal}
 .footer-contact-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}

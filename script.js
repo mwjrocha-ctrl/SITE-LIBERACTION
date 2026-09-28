@@ -14,9 +14,9 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
       {name:'Planejamento para Criptoativos',route:'/pt/criptoativos',icon:'blocks',desc:'Integração entre patrimônio digital e estrutura global.'}
     ],
     featuredSolutions:[
-      {name:'Saída Fiscal do Brasil',route:'/pt/saida-fiscal-do-brasil',body:'Organize patrimônio, renda e investimentos antes e depois da mudança.'},
-      {name:'Estruturas Offshore',route:'/pt/estrutura-offshore',body:'Empresas, holdings e instrumentos definidos conforme objetivo e jurisdição.'},
-      {name:'Regularização de Criptoativos',route:'/pt/regularizacao-fiscal-criptoativos',body:'Mapeamento e reorganização fiscal para históricos que precisam ser analisados.'}
+      {name:'Saída Fiscal do Brasil',route:'/pt/saida-fiscal-do-brasil',body:'Organize sua vida no exterior com mais liberdade e uma estratégia para sua nova realidade fiscal.'},
+      {name:'Estruturas Offshore',route:'/pt/estrutura-offshore',body:'Proteja seu patrimônio e amplie suas possibilidades de investir e operar no mundo.'},
+      {name:'Regularização de Criptoativos',route:'/pt/regularizacao-fiscal-criptoativos',body:'Organize seu histórico fiscal para movimentar seus criptoativos com mais segurança.'}
     ],
     process:[
       {title:'Diagnóstico',body:'Situação atual, patrimônio, residência fiscal e objetivos.'},
