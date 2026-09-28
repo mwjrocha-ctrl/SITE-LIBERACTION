@@ -1,0 +1,18 @@
+# Apache/LiteSpeed: HTML revalidates; content-hashed assets can be cached safely.
+<IfModule mod_headers.c>
+  <FilesMatch "\.[a-f0-9]{12}\.(css|js|woff2|webp|avif|svg|png)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript image/svg+xml text/plain application/xml application/json
+</IfModule>
+
+# Development files are not part of the public website.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(?:node_modules|tools|reports|\.vscode)(?:/|$) - [F,L]
+</IfModule>

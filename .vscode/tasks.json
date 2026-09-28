@@ -1,0 +1,36 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Gerar arquivos otimizados",
+            "type": "process",
+            "command": "powershell.exe",
+            "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/.vscode/build.ps1"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Preparar debug",
+            "dependsOn": ["Gerar arquivos otimizados", "Iniciar servidor local"],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "Iniciar servidor local",
+            "type": "process",
+            "command": "powershell.exe",
+            "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/.vscode/serve.ps1"],
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "local-server",
+                "pattern": { "regexp": "^ERROR: (.*)$", "message": 1 },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^Starting local server",
+                    "endsPattern": "^Local server ready"
+                }
+            },
+            "presentation": { "reveal": "silent", "panel": "dedicated" },
+            "runOptions": { "instanceLimit": 1 }
+        }
+    ]
+}

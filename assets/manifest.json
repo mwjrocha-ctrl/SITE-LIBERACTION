@@ -1,0 +1,113 @@
+{
+  "css": "assets/site.7bc55b1b260d.css",
+  "js": "assets/app.b10fbf639180.js",
+  "fonts": {
+    "inter": "assets/inter.3100e775e861.woff2",
+    "plus-jakarta-sans": "assets/plus-jakarta-sans.153fc85b7029.woff2",
+    "cormorant-garamond": "assets/cormorant-garamond.6f2f5c3b1abc.woff2"
+  },
+  "images": {
+    "imagens/foto-victoria.jpg": {
+      "format": "jpeg",
+      "width": 2500,
+      "height": 3452,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "density": 72,
+      "chromaSubsampling": "4:4:4",
+      "isProgressive": false,
+      "isPalette": false,
+      "resolutionUnit": "inch",
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 2500,
+        "height": 3452
+      },
+      "variants": [
+        {
+          "width": 480,
+          "path": "assets/foto-victoria-480.7619a076ac2d.webp"
+        },
+        {
+          "width": 800,
+          "path": "assets/foto-victoria-800.7ef146fa1710.webp"
+        },
+        {
+          "width": 1200,
+          "path": "assets/foto-victoria-1200.4f65056279c1.webp"
+        }
+      ]
+    },
+    "imagens/victoria-cnn.jpg": {
+      "format": "jpeg",
+      "width": 1373,
+      "height": 768,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "density": 72,
+      "chromaSubsampling": "4:2:0",
+      "isProgressive": false,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 1373,
+        "height": 768
+      },
+      "variants": [
+        {
+          "width": 480,
+          "path": "assets/victoria-cnn-480.5b877a7635b3.webp"
+        },
+        {
+          "width": 800,
+          "path": "assets/victoria-cnn-800.1cc37ba1b69a.webp"
+        },
+        {
+          "width": 1200,
+          "path": "assets/victoria-cnn-1200.009e6e8f3d40.webp"
+        }
+      ]
+    },
+    "imagens/victoria-blockchain-rio.jpg": {
+      "format": "jpeg",
+      "width": 1200,
+      "height": 1600,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "density": 72,
+      "chromaSubsampling": "4:2:0",
+      "isProgressive": true,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 1200,
+        "height": 1600
+      },
+      "variants": [
+        {
+          "width": 480,
+          "path": "assets/victoria-blockchain-rio-480.c24e50ba1fae.webp"
+        },
+        {
+          "width": 800,
+          "path": "assets/victoria-blockchain-rio-800.12f8086586b3.webp"
+        },
+        {
+          "width": 1200,
+          "path": "assets/victoria-blockchain-rio-1200.3c423b0390f4.webp"
+        }
+      ]
+    }
+  },
+  "icons": {
+    "logo": "assets/logo.fd06dd25742f.svg",
+    "favicon-light-mode": "assets/favicon-light-mode.8ca4ce2ea9bc.png",
+    "favicon-dark-mode": "assets/favicon-dark-mode.7980dfe88b5f.png"
+  }
+}

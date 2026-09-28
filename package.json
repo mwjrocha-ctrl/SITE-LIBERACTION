@@ -1,0 +1,25 @@
+{
+  "name": "liberaction-site",
+  "private": true,
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "preview": "node tools/preview.mjs",
+    "audit": "lighthouse http://localhost:8081/pt/ --only-categories=performance,accessibility,best-practices,seo --output=html --output=json --output-path=./reports/lighthouse --chrome-flags=\"--headless\""
+  },
+  "devDependencies": {
+    "@fontsource-variable/cormorant-garamond": "^5.2.0",
+    "@fontsource-variable/inter": "^5.2.0",
+    "@fontsource-variable/plus-jakarta-sans": "^5.2.0",
+    "@fullhuman/postcss-purgecss": "^7.0.2",
+    "alpinejs": "^3.14.9",
+    "cssnano": "^7.0.7",
+    "esbuild": "^0.25.5",
+    "lighthouse": "^12.6.0",
+    "lucide": "^0.468.0",
+    "playwright-core": "^1.52.0",
+    "postcss": "^8.5.4",
+    "sharp": "^0.34.2",
+    "svgo": "^3.3.2",
+    "tailwindcss": "3.4.17"
+  }
+}

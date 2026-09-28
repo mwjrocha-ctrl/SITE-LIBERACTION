@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Não é necessário liberar conteúdo para treinamento para aparecer no ChatGPT Search.
+User-agent: GPTBot
+Disallow: /
+
+Sitemap: https://liberaction.io/sitemap.xml
