@@ -1024,6 +1024,8 @@
   }
   .solution-feature,
   .solution-layout:has(.solution-small:hover) .solution-feature{
+    /* Keep the link as a card after the mobile layout switches out of grid. */
+    display:block;
     width:100%!important;
     min-width:0!important;
     min-height:0!important;
