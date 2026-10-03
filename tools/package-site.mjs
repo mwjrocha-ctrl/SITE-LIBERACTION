@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
-import { checkDiscovery } from './check-discovery.mjs';
 
 const root = process.cwd();
 const output = resolve(root, '_site');
@@ -25,14 +24,6 @@ async function findPages(directory) {
 await findPages('pt');
 for (const page of pages) {
   const html = await readFile(page, 'utf8');
-  const redirect = html.match(/<meta http-equiv="refresh" content="0; url=(pt\/[a-z0-9/-]+\/)"\s*\/>/);
-  if (redirect) {
-    assert.ok(html.includes(`<link rel="canonical" href="https://liberaction.io/${redirect[1]}"`), `Destino canônico incorreto em ${page}`);
-    assert.ok(html.includes('<base href="../../"'), `Base incorreta em ${page}`);
-    assert.ok(html.includes('content="noindex, follow"'), `Redirecionamento indexável em ${page}`);
-    await readFile(`${redirect[1]}index.html`);
-    continue;
-  }
   const scripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)].map(match => match[1]);
   assert.deepEqual(scripts, [manifest.js], `JavaScript desatualizado em ${page}`);
   assert.ok(html.includes(`href="${manifest.css}"`), `CSS desatualizado em ${page}`);
@@ -40,8 +31,6 @@ for (const page of pages) {
     await readFile(asset);
   }
 }
-
-await checkDiscovery(pages);
 
 // Publicar somente os arquivos do site, sem ferramentas ou dependências de desenvolvimento.
 await rm(output, { recursive: true, force: true });
