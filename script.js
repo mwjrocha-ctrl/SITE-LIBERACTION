@@ -1,7 +1,7 @@
 /* ===== Extracted script block 1 ===== */
-class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElementById('inner-hero-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';t.querySelector('[data-body]').textContent=this.getAttribute('body')||'';this.appendChild(t)}}
-  class PageCta extends HTMLElement{connectedCallback(){const t=document.getElementById('page-cta-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';t.querySelector('[data-body]').textContent=this.getAttribute('body')||'Atendimento individual e confidencial.';this.appendChild(t)}}
-  class LegalPage extends HTMLElement{connectedCallback(){const t=document.getElementById('legal-page-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';this.appendChild(t)}}
+class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)return;const t=document.getElementById('inner-hero-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';t.querySelector('[data-body]').textContent=this.getAttribute('body')||'';this.appendChild(t)}}
+  class PageCta extends HTMLElement{connectedCallback(){if(this.children.length)return;const t=document.getElementById('page-cta-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';t.querySelector('[data-body]').textContent=this.getAttribute('body')||'Atendimento individual e confidencial.';this.appendChild(t)}}
+  class LegalPage extends HTMLElement{connectedCallback(){if(this.children.length)return;const t=document.getElementById('legal-page-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';this.appendChild(t)}}
   customElements.define('inner-hero',InnerHero);customElements.define('page-cta',PageCta);customElements.define('legal-page',LegalPage);
 
   function siteApp(){return{
@@ -15,7 +15,7 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
     ],
     featuredSolutions:[
       {name:'Saída Fiscal do Brasil',route:'/pt/saida-fiscal-do-brasil',body:'Organize sua vida no exterior com mais liberdade e uma estratégia para sua nova realidade fiscal.'},
-      {name:'Estruturas Offshore',route:'/pt/estrutura-offshore',body:'Proteja seu patrimônio e amplie suas possibilidades de investir e operar no mundo.'},
+      {name:'Estrutura Offshore',route:'/pt/estrutura-offshore',body:'Proteja seu patrimônio e amplie suas possibilidades de investir e operar no mundo.'},
       {name:'Regularização de Criptoativos',route:'/pt/regularizacao-fiscal-criptoativos',body:'Organize seu histórico fiscal para movimentar seus criptoativos com mais segurança.'}
     ],
     process:[
@@ -38,7 +38,7 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
       {title:'Reconstruir movimentações',body:'Compras, vendas, swaps e transferências.',icon:'waypoints'},
       {title:'Organizar documentos',body:'Registros e evidências disponíveis.',icon:'folder-check'},
       {title:'Avaliar obrigações',body:'Contexto fiscal aplicável ao cliente.',icon:'scale'},
-      {title:'Definir estratégia',body:'Caminhos possíveis antes da próxima movimentação.',icon:'route'}
+      {title:'Definir estratégia',body:'Desenho de estratégia de elisão fiscal antes da próxima movimentação.',icon:'route'}
     ],
     regularizationSteps:['Identificar ativos','Analisar movimentações','Organizar documentos','Entender operações relevantes','Avaliar obrigações existentes','Definir estratégia adequada'],
     routeHref(route){return String(route||'').replace(/^\/+/, '') + '/'},
@@ -48,12 +48,12 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
   }}
 
   function offshoreExplorer(){return{selected:0,vehicles:[
-    {name:'LLC',body:'Estrutura societária utilizada em diferentes modelos de operação e organização patrimonial, conforme a jurisdição e situação fiscal do titular.',tags:['Operação','Patrimônio','Flexibilidade']},
-    {name:'IBC',body:'Veículo societário internacional que pode ser utilizado em determinadas estratégias patrimoniais e empresariais.',tags:['Internacional','Empresarial','Patrimônio']},
+    {name:'LLC',body:'Estrutura de responsabilidade limitada que separa os bens do titular com o da empresa, oferecendo vantagens fiscais e legais.',tags:['Operação','Patrimônio','Flexibilidade']},
+    {name:'IBC',body:'Sociedade Anônima que garante proteção de ativos imobiliários, bancários ou de corretagem, bem como atividade no exterior.',tags:['Internacional','Empresarial','Patrimônio']},
     {name:'Holding Internacional',body:'Estrutura destinada à organização de participações, investimentos e patrimônio dentro de uma arquitetura internacional.',tags:['Participações','Investimentos','Organização']},
-    {name:'Trust',body:'Instrumento que pode fazer parte de estratégias de proteção, administração e sucessão patrimonial.',tags:['Sucessão','Administração','Patrimônio']},
-    {name:'Foundation',body:'Estrutura utilizada em determinadas jurisdições para organização patrimonial e sucessória.',tags:['Organização','Sucessão','Jurisdição']},
-    {name:'Contas & Infraestrutura',body:'Contas bancárias, instituições financeiras e demais recursos necessários para que a estrutura funcione na prática.',tags:['Bancos','Fluxo','Execução']}
+    {name:'Trust',body:'Instrumento internacional para planejamento tributário, com proteção de bens e otimização de sucessão.',tags:['Sucessão','Administração','Patrimônio']},
+    {name:'Foundation',body:'Benefícios dos Trusts mas com forma de empresa estrangeira, são anônimos e protegem legalmente o patrimônio da fundação contra atos do fundador.',tags:['Organização','Sucessão','Jurisdição']},
+    {name:'Contas & Infraestrutura',body:'Contas bancárias, instituições financeiras e demais recursos necessários para que a estrutura funcione garantindo liquidez e baixos custos.',tags:['Bancos','Fluxo','Execução']}
   ]}}
 
   function contactForm(){return{
