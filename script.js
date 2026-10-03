@@ -1,21 +1,19 @@
 /* ===== Extracted script block 1 ===== */
-class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElementById('inner-hero-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';t.querySelector('[data-body]').textContent=this.getAttribute('body')||'';this.appendChild(t)}}
-  class PageCta extends HTMLElement{connectedCallback(){const t=document.getElementById('page-cta-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';t.querySelector('[data-body]').textContent=this.getAttribute('body')||'Atendimento individual e confidencial.';this.appendChild(t)}}
-  class LegalPage extends HTMLElement{connectedCallback(){const t=document.getElementById('legal-page-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';this.appendChild(t)}}
+class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)return;const t=document.getElementById('inner-hero-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';t.querySelector('[data-body]').textContent=this.getAttribute('body')||'';this.appendChild(t)}}
+  class PageCta extends HTMLElement{connectedCallback(){if(this.children.length)return;const t=document.getElementById('page-cta-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';t.querySelector('[data-body]').textContent=this.getAttribute('body')||'Atendimento individual e confidencial.';this.appendChild(t)}}
+  class LegalPage extends HTMLElement{connectedCallback(){if(this.children.length)return;const t=document.getElementById('legal-page-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';this.appendChild(t)}}
   customElements.define('inner-hero',InnerHero);customElements.define('page-cta',PageCta);customElements.define('legal-page',LegalPage);
 
   function siteApp(){return{
     route:'/pt',
     solutionLinks:[
       {name:'Planejamento Patrimonial Internacional',route:'/pt/planejamento-patrimonial-internacional',icon:'landmark',desc:'Patrimônio, residência fiscal e arquitetura internacional.'},
-      {name:'Saída Fiscal do Brasil',route:'/pt/saida-fiscal-do-brasil',icon:'plane',desc:'Organização antes, durante e depois da mudança.'},
       {name:'Estrutura Offshore',route:'/pt/estrutura-offshore',icon:'building-2',desc:'Veículos internacionais escolhidos a partir da estratégia.'},
       {name:'Regularização de Criptoativos',route:'/pt/regularizacao-fiscal-criptoativos',icon:'file-check-2',desc:'Reconstrução e organização do histórico patrimonial.'},
       {name:'Planejamento para Criptoativos',route:'/pt/criptoativos',icon:'blocks',desc:'Integração entre patrimônio digital e estrutura global.'}
     ],
     featuredSolutions:[
-      {name:'Saída Fiscal do Brasil',route:'/pt/saida-fiscal-do-brasil',body:'Organize sua vida no exterior com mais liberdade e uma estratégia para sua nova realidade fiscal.'},
-      {name:'Estruturas Offshore',route:'/pt/estrutura-offshore',body:'Proteja seu patrimônio e amplie suas possibilidades de investir e operar no mundo.'},
+      {name:'Estrutura Offshore',route:'/pt/estrutura-offshore',body:'Proteja seu patrimônio e amplie suas possibilidades de investir e operar no mundo.'},
       {name:'Regularização de Criptoativos',route:'/pt/regularizacao-fiscal-criptoativos',body:'Organize seu histórico fiscal para movimentar seus criptoativos com mais segurança.'}
     ],
     process:[
@@ -27,18 +25,13 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
     ],
     integrationItems:['Uma mudança de residência fiscal pode alterar a tributação.','A tributação pode mudar a estrutura ideal.','A estrutura pode mudar a forma de movimentar o patrimônio.','A movimentação pode depender de bancos, corretoras, exchanges ou ativos digitais.'],
     planningDeliverables:['Planejamento tributário internacional','Residência e saída fiscal','Empresas internacionais','Holdings · IBC · LLC','Foundations · Trusts','Contas bancárias internacionais','Fluxo financeiro','Regularização patrimonial','Criptoativos','Sucessão','Movimentação internacional','Diversificação geográfica'],
-    exitPhases:[
-      {title:'Antes da mudança',body:'Mapeamento patrimonial, análise tributária e reorganização das estruturas quando necessária.',tags:['Patrimônio','Tributação','Estratégia']},
-      {title:'Durante a transição',body:'Procedimentos da mudança de residência, coordenação documental e adequação de contas, empresas e investimentos.',tags:['Documentação','Contas','Investimentos']},
-      {title:'Depois da mudança',body:'Organização do fluxo internacional, acompanhamento das estruturas e implementação do planejamento definido.',tags:['Fluxo internacional','Acompanhamento','Operação']}
-    ],
     cryptoTopics:['Wallets','Exchanges','DEXs','DeFi','Stablecoins','Staking','Custódia','Off-ramp','Residência fiscal','Tributação','Sucessão','Fluxo crypto-fiat'],
     regularizationFlow:[
       {title:'Mapear ambientes',body:'Exchanges, wallets, DEXs e protocolos.',icon:'network'},
       {title:'Reconstruir movimentações',body:'Compras, vendas, swaps e transferências.',icon:'waypoints'},
       {title:'Organizar documentos',body:'Registros e evidências disponíveis.',icon:'folder-check'},
       {title:'Avaliar obrigações',body:'Contexto fiscal aplicável ao cliente.',icon:'scale'},
-      {title:'Definir estratégia',body:'Caminhos possíveis antes da próxima movimentação.',icon:'route'}
+      {title:'Definir estratégia',body:'Desenho de estratégia de elisão fiscal antes da próxima movimentação.',icon:'route'}
     ],
     regularizationSteps:['Identificar ativos','Analisar movimentações','Organizar documentos','Entender operações relevantes','Avaliar obrigações existentes','Definir estratégia adequada'],
     routeHref(route){return String(route||'').replace(/^\/+/, '') + '/'},
@@ -48,12 +41,12 @@ class InnerHero extends HTMLElement{connectedCallback(){const t=document.getElem
   }}
 
   function offshoreExplorer(){return{selected:0,vehicles:[
-    {name:'LLC',body:'Estrutura societária utilizada em diferentes modelos de operação e organização patrimonial, conforme a jurisdição e situação fiscal do titular.',tags:['Operação','Patrimônio','Flexibilidade']},
-    {name:'IBC',body:'Veículo societário internacional que pode ser utilizado em determinadas estratégias patrimoniais e empresariais.',tags:['Internacional','Empresarial','Patrimônio']},
+    {name:'LLC',body:'Estrutura de responsabilidade limitada que separa os bens do titular com o da empresa, oferecendo vantagens fiscais e legais.',tags:['Operação','Patrimônio','Flexibilidade']},
+    {name:'IBC',body:'Sociedade Anônima que garante proteção de ativos imobiliários, bancários ou de corretagem, bem como atividade no exterior.',tags:['Internacional','Empresarial','Patrimônio']},
     {name:'Holding Internacional',body:'Estrutura destinada à organização de participações, investimentos e patrimônio dentro de uma arquitetura internacional.',tags:['Participações','Investimentos','Organização']},
-    {name:'Trust',body:'Instrumento que pode fazer parte de estratégias de proteção, administração e sucessão patrimonial.',tags:['Sucessão','Administração','Patrimônio']},
-    {name:'Foundation',body:'Estrutura utilizada em determinadas jurisdições para organização patrimonial e sucessória.',tags:['Organização','Sucessão','Jurisdição']},
-    {name:'Contas & Infraestrutura',body:'Contas bancárias, instituições financeiras e demais recursos necessários para que a estrutura funcione na prática.',tags:['Bancos','Fluxo','Execução']}
+    {name:'Trust',body:'Instrumento internacional para planejamento tributário, com proteção de bens e otimização de sucessão.',tags:['Sucessão','Administração','Patrimônio']},
+    {name:'Foundation',body:'Benefícios dos Trusts mas com forma de empresa estrangeira, são anônimos e protegem legalmente o patrimônio da fundação contra atos do fundador.',tags:['Organização','Sucessão','Jurisdição']},
+    {name:'Contas & Infraestrutura',body:'Contas bancárias, instituições financeiras e demais recursos necessários para que a estrutura funcione garantindo liquidez e baixos custos.',tags:['Bancos','Fluxo','Execução']}
   ]}}
 
   function contactForm(){return{

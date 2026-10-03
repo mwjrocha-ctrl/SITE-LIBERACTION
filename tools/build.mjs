@@ -8,6 +8,7 @@ import purgecssModule from '@fullhuman/postcss-purgecss';
 import { build, transform } from 'esbuild';
 import sharp from 'sharp';
 import { optimize } from 'svgo';
+import { renderComponents } from './render-components.mjs';
 
 const utf8 = file => readFile(file,'utf8');
 const purgecss=purgecssModule.default||purgecssModule;
@@ -74,7 +75,7 @@ for(const name of ['logo','favicon-light-mode','favicon-dark-mode']){
 
 for(const [path,original] of documents){
   // The redirect document does not need application assets.
-  if(path==='index.html') continue;
+  if(/<meta http-equiv="refresh"/i.test(original)) continue;
   let html=original
     .replace(/\s*<link[^>]+(?:fonts\.googleapis\.com|fonts\.gstatic\.com)[^>]*>/g,'')
     .replace(/\s*<link[^>]+rel="preload"[^>]*>/g,'')
@@ -107,6 +108,13 @@ for(const [path,original] of documents){
     }
     return tag;
   });
+  html=renderComponents(html);
+  if(path.startsWith('pt/') && !html.includes('rel="describedby"')){
+    html=html.replace('</head>','  <link rel="describedby" type="text/plain" href="https://liberaction.io/llms.txt" />\n</head>');
+  }
+  if(!html.includes('<noscript><style>.reveal')){
+    html=html.replace('</head>','  <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>\n</head>');
+  }
   await writeFile(path,html);
 }
 const manifest={css:cssPath,js:appPath,fonts:fontPaths,images:Object.fromEntries(images),icons:svgPaths};
