@@ -30,7 +30,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     exitPhases:[
       {title:'Antes da mudança',body:'Mapeamento patrimonial, análise tributária e reorganização das estruturas quando necessária.',tags:['Patrimônio','Tributação','Estratégia']},
       {title:'Durante a transição',body:'Procedimentos da mudança de residência, coordenação documental e adequação de contas, empresas e investimentos.',tags:['Documentação','Contas','Investimentos']},
-      {title:'Depois da mudança',body:'Organização do fluxo internacional, acompanhamento das estruturas e implementação do planejamento definido.',tags:['Fluxo internacional','Acompanhamento','Operação']}
+      {title:'Depois da mudança',body:'Organização do fluxo internacional, acompanhamento das estruturas e saída fiscal definitiva.',tags:['Fluxo internacional','Acompanhamento','Operação']}
     ],
     cryptoTopics:['Wallets','Exchanges','DEXs','DeFi','Stablecoins','Staking','Custódia','Off-ramp','Residência fiscal','Tributação','Sucessão','Fluxo crypto-fiat'],
     regularizationFlow:[
