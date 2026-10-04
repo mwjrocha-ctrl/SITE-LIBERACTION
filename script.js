@@ -125,11 +125,12 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     get progress(){return this.sent?100:Math.round((this.step-1)/this.total*100);},
     letter(i){return String.fromCharCode(65+i);},
     focusStep(){this.$nextTick(()=>setTimeout(()=>document.querySelector('[data-tl-step="'+this.step+'"] .tl-input')?.focus({preventScroll:true}),260));},
-    // Seleção de opção: marca e avança automaticamente (como no Tally)
-    pick(field,value){this.form[field]=value;this.error='';setTimeout(()=>this.next(),220);},
-    // Teclas A, B, C… escolhem opções nas etapas de múltipla escolha
+    // Seleção de opção: apenas marca a opção sem avançar automaticamente
+    pick(field,value){this.form[field]=value;this.error='';},
+    // Teclas A, B, C… marcam opções nas etapas de múltipla escolha
     hotkey(e){
       if(this.sent||e.metaKey||e.ctrlKey||e.altKey||e.target.matches('input,textarea'))return;
+      if(e.key==='Enter'&&this.step<this.total){e.preventDefault();this.next();return;}
       const list=this.step===1?this.needs:this.step===6?this.assetsOptions:null;
       if(!list)return;
       const i=e.key.toUpperCase().charCodeAt(0)-65;

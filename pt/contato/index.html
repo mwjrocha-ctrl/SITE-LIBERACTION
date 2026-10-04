@@ -106,7 +106,7 @@
   <link rel="preload" href="assets/plus-jakarta-sans.153fc85b7029.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/inter.3100e775e861.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/site.a0ca21edd9d5.css" />
-  <script defer src="assets/app.3d5dd1d0f02d.js"></script>
+  <script defer src="assets/app.3e74d2d66d55.js"></script>
   <link rel="describedby" type="text/plain" href="https://liberaction.io/llms.txt" />
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
@@ -161,7 +161,8 @@
 <div class="tl-step" data-tl-step="1" x-show="step===1&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>1</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h1 class="tl-question">Qual é a sua principal necessidade?</h1><p class="tl-hint">Escolha a opção que mais se aproxima do seu momento.</p>
-<div class="tl-options" role="radiogroup" aria-label="Qual é a sua principal necessidade?"><template :key="o" x-for="(o,i) in needs"><button class="tl-option" type="button" role="radio" :aria-checked="form.need===o" :class="form.need===o&&'is-active'" @click="pick('need',o)"><kbd x-text="letter(i)"></kbd><span x-text="o"></span><em class="tl-tick" aria-hidden="true">✓</em></button></template></div></div><div class="tl-step" data-tl-step="2" x-show="step===2&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
+<div class="tl-options" role="radiogroup" aria-label="Qual é a sua principal necessidade?"><template :key="o" x-for="(o,i) in needs"><button class="tl-option" type="button" role="radio" :aria-checked="form.need===o" :class="form.need===o&&'is-active'" @click="pick('need',o)"><kbd x-text="letter(i)"></kbd><span x-text="o"></span><em class="tl-tick" aria-hidden="true">✓</em></button></template></div>
+<div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="2" x-show="step===2&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>2</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Qual é o seu nome completo?</h2><p class="tl-hint">Para sabermos com quem estamos falando.</p>
 <input class="tl-input" type="text" autocomplete="name" placeholder="Digite seu nome" x-model="form.name" aria-label="Qual é o seu nome completo?"/>
@@ -180,7 +181,8 @@
 <div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="6" x-show="step===6&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>6</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Qual é o seu patrimônio aproximado?</h2><p class="tl-hint">Informação confidencial, usada apenas para direcionar o atendimento.</p>
-<div class="tl-options" role="radiogroup" aria-label="Qual é o seu patrimônio aproximado?"><template :key="o" x-for="(o,i) in assetsOptions"><button class="tl-option" type="button" role="radio" :aria-checked="form.assets===o" :class="form.assets===o&&'is-active'" @click="pick('assets',o)"><kbd x-text="letter(i)"></kbd><span x-text="o"></span><em class="tl-tick" aria-hidden="true">✓</em></button></template></div></div><div class="tl-step" data-tl-step="7" x-show="step===7&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
+<div class="tl-options" role="radiogroup" aria-label="Qual é o seu patrimônio aproximado?"><template :key="o" x-for="(o,i) in assetsOptions"><button class="tl-option" type="button" role="radio" :aria-checked="form.assets===o" :class="form.assets===o&&'is-active'" @click="pick('assets',o)"><kbd x-text="letter(i)"></kbd><span x-text="o"></span><em class="tl-tick" aria-hidden="true">✓</em></button></template></div>
+<div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="7" x-show="step===7&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>7</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Conte resumidamente o que você precisa resolver. <small>(opcional)</small></h2><p class="tl-hint">Quanto mais contexto, mais objetiva será a primeira análise.</p>
 <textarea class="tl-input tl-textarea" rows="4" placeholder="Escreva aqui…" x-model="form.message" @keydown.meta.enter.prevent="submit()" @keydown.ctrl.enter.prevent="submit()" aria-label="Mensagem"></textarea>
