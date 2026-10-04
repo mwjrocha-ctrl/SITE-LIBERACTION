@@ -33,7 +33,7 @@ for (const page of pages) {
     await readFile(`${redirect[1]}index.html`);
     continue;
   }
-  const scripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)].map(match => match[1]);
+  const scripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)].map(match => match[1]).filter(src => !src.includes('googletagmanager.com'));
   assert.deepEqual(scripts, [manifest.js], `JavaScript desatualizado em ${page}`);
   assert.ok(html.includes(`href="${manifest.css}"`), `CSS desatualizado em ${page}`);
   for (const asset of new Set(html.match(/(?:assets|imagens)\/[a-zA-Z0-9._/-]+\.(?:js|css|woff2|webp|avif|svg|png|jpg)/g))) {
