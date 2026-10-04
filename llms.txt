@@ -17,7 +17,7 @@ O conteúdo do site é institucional e educacional. A definição de uma estrutu
 - [Liberaction — site oficial](https://liberaction.io/pt/): Visão geral do planejamento patrimonial internacional especializado em criptoativos.
 - [Planejamento patrimonial internacional](https://liberaction.io/pt/planejamento-patrimonial-internacional/): Integração entre patrimônio, residência fiscal, empresas, investimentos e sucessão.
 - [Quem somos](https://liberaction.io/pt/quem-somos/): Origem da Liberaction em 2022 e trajetória da fundadora Victória Galasso.
-- [Solicitar diagnóstico](https://liberaction.io/pt/diagnostico/): Primeiro contato para avaliar o contexto patrimonial e os objetivos do cliente.
+- [Solicitar diagnóstico](https://liberaction.io/pt/contato/): Primeiro contato para avaliar o contexto patrimonial e os objetivos do cliente.
 - [Contato](https://liberaction.io/pt/contato/): Canais oficiais de atendimento da Liberaction.
 
 ## Optional
