@@ -186,6 +186,19 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     });
     updateScrollFX();
   }
+  function initTestimonialCarousel(){
+    const carousel=document.querySelector('[data-testimonial-carousel]');
+    if(!carousel||carousel.dataset.initialized==='true')return;
+    const track=carousel.querySelector('[data-testimonial-track]');
+    const page=track?.querySelector('[data-testimonial-page]');
+    if(!track||!page)return;
+    carousel.dataset.initialized='true';
+    const duplicate=page.cloneNode(true);
+    duplicate.setAttribute('aria-hidden','true');
+    duplicate.querySelectorAll('[id]').forEach(element=>element.removeAttribute('id'));
+    track.appendChild(duplicate);
+    carousel.classList.add('is-in-view');
+  }
   function updateScrollFX(){
     scrollFxRAF=null;
     const vh=window.innerHeight||800;
@@ -225,6 +238,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
   document.addEventListener('DOMContentLoaded',()=>{
     initReveals();
     initScrollFX();
+    initTestimonialCarousel();
     window.lucide?.createIcons();
     document.fonts?.ready.then(scheduleScrollFX);
   });
