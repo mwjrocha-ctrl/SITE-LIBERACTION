@@ -138,17 +138,8 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     },
     get waUrl(){
       const clean=v=>(v||'').toString().trim();
-      const msg=[
-        'Olá! Concluí o formulário de diagnóstico no site da Liberaction e gostaria de continuar o atendimento.',
-        '',
-        `*Nome:* ${clean(this.form.name)}`,
-        `*WhatsApp:* ${clean(this.form.whatsapp) || 'Não informado'}`,
-        `*E-mail:* ${clean(this.form.email)}`,
-        `*Residência:* ${clean(this.form.country) || 'Não informado'}`,
-        `*Necessidade:* ${clean(this.form.need)}`,
-        `*Patrimônio:* ${clean(this.form.assets)}`,
-        this.form.message ? `*Mensagem:* ${clean(this.form.message)}` : ''
-      ].filter(Boolean).join('\n');
+      const needText = clean(this.form.need) || 'Internacionalização patrimonial';
+      const msg = `Olá! Acabei de preencher o diagnóstico no site. Meu objetivo principal é ${needText}. Gostaria de entender os próximos passos.`;
       return 'https://wa.me/5511953448220?text='+encodeURIComponent(msg);
     },
     validateStep(){
