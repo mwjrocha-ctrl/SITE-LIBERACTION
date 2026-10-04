@@ -106,7 +106,7 @@
   <link rel="preload" href="assets/plus-jakarta-sans.153fc85b7029.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/inter.3100e775e861.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/site.a0ca21edd9d5.css" />
-  <script defer src="assets/app.3e74d2d66d55.js"></script>
+  <script defer src="assets/app.620edbc96dde.js"></script>
   <link rel="describedby" type="text/plain" href="https://liberaction.io/llms.txt" />
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
@@ -189,8 +189,8 @@
 <div class="tl-actions"><button class="button-dark" type="submit" :disabled="sending"><span x-text="sending?'Enviando…':'Enviar solicitação'"></span> <i data-lucide="send" aria-hidden="true"></i></button><span class="tl-key"><b>Ctrl/⌘ + Enter</b> para enviar</span></div>
 <p class="tl-legal">Protegido por reCAPTCHA. Aplicam-se a <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">Política de Privacidade</a> e os <a href="https://policies.google.com/terms" rel="noopener noreferrer" target="_blank">Termos de Serviço</a> do Google. O envio não constitui aconselhamento jurídico, tributário ou financeiro.</p></div><div class="tl-step tl-done" x-show="sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak role="status">
 <p class="tl-count"><span><i data-lucide="check" aria-hidden="true"></i></span></p>
-<h2 class="tl-question">Recebemos sua solicitação.</h2><p class="tl-hint">Nossa equipe fará uma análise inicial das informações enviadas e entrará em contato em breve.</p>
-<div class="tl-actions"><a class="button-dark" href="pt/">Voltar ao início <i data-lucide="arrow-up-right" aria-hidden="true"></i></a></div></div>
+<h2 class="tl-question">Recebemos sua solicitação.</h2><p class="tl-hint">Nossa equipe fará uma análise inicial das informações enviadas. Se preferir atendimento imediato, continue diretamente no WhatsApp:</p>
+<div class="tl-actions"><a class="button-dark" :href="waUrl" target="_blank" rel="noopener noreferrer">Continuar no WhatsApp com a equipe <i data-lucide="arrow-right" aria-hidden="true"></i></a><a class="button-light" href="pt/">Voltar ao início</a></div></div>
 <p class="tl-error" role="alert" x-show="error" x-text="error" x-cloak></p>
 </form>
 <div class="tl-nav" x-show="!sent" x-cloak><span class="tl-step-label"><b x-text="step"></b> de <span x-text="total"></span></span><button type="button" class="tl-nav-btn" aria-label="Pergunta anterior" @click="back()" :disabled="step===1"><i data-lucide="chevron-up" aria-hidden="true"></i></button><button type="button" class="tl-nav-btn" aria-label="Próxima pergunta" @click="next()" :disabled="step===total"><i data-lucide="chevron-down" aria-hidden="true"></i></button></div>
