@@ -83,7 +83,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       formData.append('formType','Contato');
       for(const key in this.form)formData.append(key,this.form[key]);
       try{
-        const url='https://script.google.com/macros/s/AKfycbww1cGKQJIaJ-p_PVuVRw8scWioZq8pe0t1Gc0Qu6aZ_tlM0xN6ZZFsiHFluKPYpSgm/exec';
+        const url='https://script.google.com/macros/s/AKfycbxeetsC3WEJWW6KTZxkLcDwobfGlHC7XUO0qDYtGhlD45pa57HcoBv1II4EXOgiGOh3/exec';
         if(!url.includes('COLOQUE_SUA_URL')) await fetch(url,{method:'POST',body:formData,mode:'no-cors'});
       }catch(e){console.error(e);}
 
@@ -105,7 +105,73 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     }
   }}
 
-  function diagnosticForm(){return{step:1,sending:false,sent:false,stepTitles:['O que você precisa resolver?','Quem está falando conosco?','Qual é o contexto do patrimônio?'],needs:['Saída fiscal do Brasil','Planejamento tributário internacional','Estrutura offshore','Regularização de criptoativos','Movimentação de patrimônio em criptoativos','Planejamento sucessório','Internacionalização patrimonial','Outro'],form:{need:'',name:'',whatsapp:'',email:'',country:'',assets:'R$ 1 milhão a R$ 3 milhões',message:''},async submit(){this.sending=true;const formData=new FormData();formData.append('formType','Diagnóstico');for(const key in this.form)formData.append(key,this.form[key]);try{const url='https://script.google.com/macros/s/AKfycbww1cGKQJIaJ-p_PVuVRw8scWioZq8pe0t1Gc0Qu6aZ_tlM0xN6ZZFsiHFluKPYpSgm/exec';if(url.includes('COLOQUE_SUA_URL'))console.warn('URL do Google Sheets não configurada.');else await fetch(url,{method:'POST',body:formData,mode:'no-cors'});this.sent=true;}catch(e){console.error(e);this.sent=true;}finally{this.sending=false;setTimeout(()=>this.sent=false,9000);}}}}
+  // Chave pública (site key) do Google reCAPTCHA v3. Gere em https://www.google.com/recaptcha/admin
+  const RECAPTCHA_SITE_KEY='COLOQUE_SUA_SITE_KEY';
+  const FORM_ENDPOINT='https://script.google.com/macros/s/AKfycbxeetsC3WEJWW6KTZxkLcDwobfGlHC7XUO0qDYtGhlD45pa57HcoBv1II4EXOgiGOh3/exec';
+  let recaptchaPromise=null;
+  function loadRecaptcha(){
+    if(RECAPTCHA_SITE_KEY.includes('COLOQUE'))return Promise.resolve(false);
+    if(!recaptchaPromise)recaptchaPromise=new Promise(resolve=>{
+      const s=document.createElement('script');
+      s.src='https://www.google.com/recaptcha/api.js?render='+RECAPTCHA_SITE_KEY;
+      s.async=true;s.onload=()=>window.grecaptcha.ready(()=>resolve(true));s.onerror=()=>resolve(false);
+      document.head.appendChild(s);
+    });
+    return recaptchaPromise;
+  }
+
+  function diagnosticForm(){return{step:1,total:7,dir:1,sending:false,sent:false,error:'',startedAt:Date.now(),website:'',needs:['Saída fiscal do Brasil','Planejamento tributário internacional','Estrutura offshore','Regularização de criptoativos','Movimentação de patrimônio em criptoativos','Planejamento sucessório','Internacionalização patrimonial','Outro'],assetsOptions:['Até R$ 1 milhão','R$ 1 milhão a R$ 3 milhões','R$ 3 milhões a R$ 10 milhões','R$ 10 milhões a R$ 50 milhões','Acima de R$ 50 milhões','Prefiro informar durante o atendimento'],form:{need:'',name:'',whatsapp:'',email:'',country:'',assets:'',message:''},
+    init(){this.$el.addEventListener('focusin',()=>loadRecaptcha(),{once:true});this.focusStep();},
+    get progress(){return this.sent?100:Math.round((this.step-1)/this.total*100);},
+    letter(i){return String.fromCharCode(65+i);},
+    focusStep(){this.$nextTick(()=>setTimeout(()=>document.querySelector('[data-tl-step="'+this.step+'"] .tl-input')?.focus({preventScroll:true}),260));},
+    // Seleção de opção: marca e avança automaticamente (como no Tally)
+    pick(field,value){this.form[field]=value;this.error='';setTimeout(()=>this.next(),220);},
+    // Teclas A, B, C… escolhem opções nas etapas de múltipla escolha
+    hotkey(e){
+      if(this.sent||e.metaKey||e.ctrlKey||e.altKey||e.target.matches('input,textarea'))return;
+      const list=this.step===1?this.needs:this.step===6?this.assetsOptions:null;
+      if(!list)return;
+      const i=e.key.toUpperCase().charCodeAt(0)-65;
+      if(e.key.length===1&&i>=0&&i<list.length){e.preventDefault();this.pick(this.step===1?'need':'assets',list[i]);}
+    },
+    validateStep(){
+      this.error='';
+      const f=this.form;
+      if(this.step===1&&!f.need){this.error='Escolha uma opção para continuar.';return false;}
+      if(this.step===2&&f.name.trim().length<3){this.error='Informe seu nome completo.';return false;}
+      if(this.step===3&&f.whatsapp.replace(/\D/g,'').length<8){this.error='Informe um WhatsApp válido, com DDD.';return false;}
+      if(this.step===4&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())){this.error='Informe um e-mail válido.';return false;}
+      if(this.step===6&&!f.assets){this.error='Escolha uma opção para continuar.';return false;}
+      return true;
+    },
+    next(){if(this.validateStep()&&this.step<this.total){this.dir=1;this.step++;this.focusStep();}},
+    back(){this.error='';if(this.step>1){this.dir=-1;this.step--;this.focusStep();}},
+    async submit(){
+      // Enter nas etapas anteriores à última apenas avança; nunca envia nem mostra sucesso
+      if(this.step<this.total){this.next();return;}
+      if(this.sending)return;
+      if(!this.validateStep())return;
+      // Honeypot preenchido ou envio rápido demais = robô: finge sucesso sem enviar
+      if(this.website||Date.now()-this.startedAt<4000){this.sent=true;return;}
+      this.sending=true;this.error='';
+      try{
+        const formData=new FormData();
+        formData.append('formType','Diagnóstico');
+        for(const key in this.form)formData.append(key,this.form[key]);
+        if(await loadRecaptcha()){
+          const token=await window.grecaptcha.execute(RECAPTCHA_SITE_KEY,{action:'diagnostico'});
+          formData.append('recaptchaToken',token);
+        }
+        const res=await fetch(FORM_ENDPOINT,{method:'POST',body:formData});
+        const data=await res.json();
+        if(!data||data.ok!==true)throw new Error((data&&data.error)||'Falha no envio');
+        this.sent=true;
+      }catch(e){
+        console.error(e);
+        this.error='Não foi possível enviar sua solicitação. Tente novamente ou fale conosco pelo WhatsApp.';
+      }finally{this.sending=false;}
+    }}}
 
   const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revealObserver.unobserve(e.target)}}),{threshold:.12});
   function initReveals(){
