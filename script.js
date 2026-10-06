@@ -636,8 +636,10 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     const duplicate=page.cloneNode(true);
     duplicate.setAttribute('aria-hidden','true');
     duplicate.querySelectorAll('[id]').forEach(element=>element.removeAttribute('id'));
+    duplicate.querySelectorAll('.light-hover-card').forEach(el=>delete el.dataset.lightBound);
     track.appendChild(duplicate);
     carousel.classList.add('is-in-view');
+    window.bindCardLights?.();
   }
   function updateScrollFX(){
     scrollFxRAF=null;
@@ -734,6 +736,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       },{passive:true});
     });
   }
+  window.bindCardLights = bindCardLights;
   document.addEventListener('DOMContentLoaded',bindCardLights);
   
 })();
