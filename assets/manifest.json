@@ -1,6 +1,6 @@
 {
-  "css": "assets/site.bf5fda20881e.css",
-  "js": "assets/app.1b84475c9817.js",
+  "css": "assets/site.8f26c84e9036.css",
+  "js": "assets/app.cc65f3ac20e3.js",
   "fonts": {
     "inter": "assets/inter.3100e775e861.woff2",
     "plus-jakarta-sans": "assets/plus-jakarta-sans.153fc85b7029.woff2",
@@ -101,6 +101,102 @@
         {
           "width": 1200,
           "path": "assets/victoria-blockchain-rio-1200.3c423b0390f4.webp"
+        }
+      ]
+    },
+    "imagens/podcast-settee.jpg": {
+      "format": "jpeg",
+      "width": 1280,
+      "height": 720,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "density": 72,
+      "chromaSubsampling": "4:2:0",
+      "isProgressive": false,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 1280,
+        "height": 720
+      },
+      "variants": [
+        {
+          "width": 480,
+          "path": "assets/podcast-settee-480.585043c39b4b.webp"
+        },
+        {
+          "width": 800,
+          "path": "assets/podcast-settee-800.d17841b1e2dc.webp"
+        },
+        {
+          "width": 1200,
+          "path": "assets/podcast-settee-1200.df0d1772f89b.webp"
+        }
+      ]
+    },
+    "imagens/podcast-blocktrends.jpg": {
+      "format": "jpeg",
+      "width": 1280,
+      "height": 720,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "density": 72,
+      "chromaSubsampling": "4:2:0",
+      "isProgressive": false,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 1280,
+        "height": 720
+      },
+      "variants": [
+        {
+          "width": 480,
+          "path": "assets/podcast-blocktrends-480.69194ae8a24d.webp"
+        },
+        {
+          "width": 800,
+          "path": "assets/podcast-blocktrends-800.9b0eb85d31bc.webp"
+        },
+        {
+          "width": 1200,
+          "path": "assets/podcast-blocktrends-1200.92d9327a308d.webp"
+        }
+      ]
+    },
+    "imagens/coluna-livecoins.jpg": {
+      "format": "jpeg",
+      "width": 1280,
+      "height": 720,
+      "space": "srgb",
+      "channels": 3,
+      "depth": "uchar",
+      "density": 72,
+      "chromaSubsampling": "4:2:0",
+      "isProgressive": false,
+      "isPalette": false,
+      "hasProfile": false,
+      "hasAlpha": false,
+      "autoOrient": {
+        "width": 1280,
+        "height": 720
+      },
+      "variants": [
+        {
+          "width": 480,
+          "path": "assets/coluna-livecoins-480.253baf899eaa.webp"
+        },
+        {
+          "width": 800,
+          "path": "assets/coluna-livecoins-800.b41f0e25ddb1.webp"
+        },
+        {
+          "width": 1200,
+          "path": "assets/coluna-livecoins-1200.eae9b1487efd.webp"
         }
       ]
     }
