@@ -105,8 +105,8 @@
   </script>
   <link rel="preload" href="assets/plus-jakarta-sans.153fc85b7029.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/inter.3100e775e861.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="assets/site.739bdf29e7e4.css" />
-  <script defer src="assets/app.851da8b75c40.js"></script>
+  <link rel="stylesheet" href="assets/site.becb8a62f339.css" />
+  <script defer src="assets/app.7897129652be.js"></script>
   <link rel="describedby" type="text/plain" href="https://liberaction.io/llms.txt" />
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
@@ -168,8 +168,31 @@
 <input class="tl-input" type="text" autocomplete="name" placeholder="Digite seu nome" x-model="form.name" aria-label="Qual é o seu nome completo?"/>
 <div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="3" x-show="step===3&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>3</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
-<h2 class="tl-question">Qual é o seu WhatsApp?</h2><p class="tl-hint">Com DDD. Usaremos apenas para retornar o seu contato.</p>
-<input class="tl-input" type="tel" autocomplete="tel" placeholder="+55 11 90000-0000" x-model="form.whatsapp" aria-label="Qual é o seu WhatsApp?"/>
+<h2 class="tl-question">Qual é o seu WhatsApp?</h2><p class="tl-hint">Escolha o código do país e informe o número com DDD. Usaremos apenas para retornar o seu contato.</p>
+<div class="tl-phone-field" @click.outside="phoneDropdownOpen=false">
+  <button type="button" class="tl-dial-btn" :class="phoneDropdownOpen&&'is-active'" @click="togglePhoneDropdown()" aria-label="Escolher país e código DDI/DDD" :aria-expanded="phoneDropdownOpen">
+    <span class="tl-dial-flag" x-text="phoneCountry.flag"></span>
+    <span class="tl-dial-code" x-text="phoneCountry.dial"></span>
+    <i data-lucide="chevron-down" class="tl-dial-chevron" aria-hidden="true"></i>
+  </button>
+  <div class="tl-dropdown-menu" x-show="phoneDropdownOpen" x-transition x-cloak>
+    <div class="tl-dropdown-search-box">
+      <i data-lucide="search" aria-hidden="true"></i>
+      <input type="text" class="tl-dropdown-search-input tl-phone-search-input" placeholder="Buscar país, código ou DDD..." x-model="phoneSearch" @keydown.enter.prevent="selectFirstPhoneCountry()" @keydown.escape="phoneDropdownOpen=false" />
+    </div>
+    <div class="tl-dropdown-list">
+      <template :key="c.code + c.dial + c.name" x-for="c in filteredPhoneCountries()">
+        <button type="button" class="tl-dropdown-item" :class="phoneCountry.code===c.code&&phoneCountry.dial===c.dial&&'is-selected'" @click="choosePhoneCountry(c)">
+          <span class="flag" x-text="c.flag"></span>
+          <span class="name" x-text="c.name"></span>
+          <span class="dial" x-text="c.dial"></span>
+        </button>
+      </template>
+      <div class="tl-dropdown-empty" x-show="filteredPhoneCountries().length===0">Nenhum país encontrado</div>
+    </div>
+  </div>
+  <input class="tl-input tl-phone-input" type="tel" autocomplete="tel" :placeholder="phonePlaceholder" :value="rawPhone" @input="onPhoneInput($event)" aria-label="Qual é o seu WhatsApp?" />
+</div>
 <div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="4" x-show="step===4&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>4</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Qual é o seu melhor e-mail?</h2><p class="tl-hint">Enviaremos a confirmação e os próximos passos.</p>
@@ -177,7 +200,28 @@
 <div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="5" x-show="step===5&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>5</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Onde você reside atualmente? <small>(opcional)</small></h2><p class="tl-hint">País ou cidade de residência fiscal.</p>
-<input class="tl-input" type="text" autocomplete="country-name" placeholder="Ex.: Brasil" x-model="form.country" aria-label="Onde você reside atualmente?"/>
+<div class="tl-country-field" @click.outside="countryDropdownOpen=false">
+  <div class="tl-country-control" :class="countryDropdownOpen&&'is-focused'">
+    <span class="tl-country-flag-badge" x-show="selectedCountryFlag" x-text="selectedCountryFlag" aria-hidden="true"></span>
+    <input class="tl-input tl-country-input" type="text" autocomplete="off" placeholder="Digite para buscar ou selecione o país..." x-model="countryQuery" @input="onCountryInput()" @click="openCountryDropdown()" @keydown.down.prevent="moveCountryHighlight(1)" @keydown.up.prevent="moveCountryHighlight(-1)" @keydown.enter.prevent="selectHighlightedCountry()" @keydown.escape="countryDropdownOpen=false" aria-label="Onde você reside atualmente?" />
+    <div class="tl-country-actions">
+      <button type="button" class="tl-country-btn" x-show="countryQuery" @click="clearCountry()" aria-label="Limpar campo"><i data-lucide="x" aria-hidden="true"></i></button>
+      <button type="button" class="tl-country-btn" :class="countryDropdownOpen&&'is-active'" @click="toggleCountryDropdown()" aria-label="Abrir ou fechar lista de países" :aria-expanded="countryDropdownOpen"><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+    </div>
+  </div>
+  <div class="tl-dropdown-menu tl-country-menu" x-show="countryDropdownOpen" x-transition x-cloak>
+    <div class="tl-dropdown-list">
+      <div class="tl-dropdown-section" x-show="!countryQuery.trim()">Principais países</div>
+      <template :key="c.code + c.name" x-for="(c, idx) in filteredCountries()">
+        <button type="button" class="tl-dropdown-item" :class="countryHighlightIndex===idx&&'is-highlighted'" @click="chooseCountry(c)">
+          <span class="flag" x-text="c.flag"></span>
+          <span class="name" x-text="c.name"></span>
+        </button>
+      </template>
+      <div class="tl-dropdown-empty" x-show="filteredCountries().length===0">Nenhum país encontrado. Pressione Enter para continuar com o texto digitado.</div>
+    </div>
+  </div>
+</div>
 <div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="6" x-show="step===6&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>6</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Qual é o seu patrimônio aproximado?</h2><p class="tl-hint">Informação confidencial, usada apenas para direcionar o atendimento.</p>

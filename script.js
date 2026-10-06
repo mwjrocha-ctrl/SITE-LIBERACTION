@@ -120,14 +120,200 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     return recaptchaPromise;
   }
 
-  function diagnosticForm(){return{step:1,total:7,dir:1,sending:false,sent:false,error:'',startedAt:Date.now(),website:'',needs:['Saída fiscal do Brasil','Planejamento tributário internacional','Estrutura offshore','Regularização de criptoativos','Movimentação de patrimônio em criptoativos','Planejamento sucessório','Internacionalização patrimonial','Outro'],assetsOptions:['Até R$ 1 milhão','R$ 1 milhão a R$ 3 milhões','R$ 3 milhões a R$ 10 milhões','R$ 10 milhões a R$ 50 milhões','Acima de R$ 50 milhões','Prefiro informar durante o atendimento'],form:{need:'',name:'',whatsapp:'',email:'',country:'',assets:'',message:''},
-    init(){this.$el.addEventListener('focusin',()=>loadRecaptcha(),{once:true});this.focusStep();},
+  const COUNTRIES_DATA = [
+    { name: 'Brasil', code: 'BR', dial: '+55', flag: '🇧🇷', priority: 1, aliases: ['brasil', 'brazil', 'br', '11', '21', '31', '41', '48', '51', '61', '71', '81', '85', 'sp', 'rj', 'mg', 'sc', 'pr', 'rs'] },
+    { name: 'Portugal', code: 'PT', dial: '+351', flag: '🇵🇹', priority: 2, aliases: ['portugal', 'pt', 'lisboa', 'porto'] },
+    { name: 'Estados Unidos', code: 'US', dial: '+1', flag: '🇺🇸', priority: 3, aliases: ['estados unidos', 'eua', 'usa', 'us', 'miami', 'florida', 'delaware', 'wyoming'] },
+    { name: 'Espanha', code: 'ES', dial: '+34', flag: '🇪🇸', priority: 4, aliases: ['espanha', 'spain', 'es', 'madrid', 'barcelona'] },
+    { name: 'Emirados Árabes Unidos', code: 'AE', dial: '+971', flag: '🇦🇪', priority: 5, aliases: ['emirados arabes unidos', 'emirados', 'dubai', 'abu dhabi', 'uae', 'ae'] },
+    { name: 'Paraguai', code: 'PY', dial: '+595', flag: '🇵🇾', priority: 6, aliases: ['paraguai', 'paraguay', 'py', 'assuncao'] },
+    { name: 'Uruguai', code: 'UY', dial: '+598', flag: '🇺🇾', priority: 7, aliases: ['uruguai', 'uruguay', 'uy', 'montevideu', 'punta del este'] },
+    { name: 'Suíça', code: 'CH', dial: '+41', flag: '🇨🇭', priority: 8, aliases: ['suica', 'switzerland', 'ch', 'zurique', 'genebra', 'lugano'] },
+    { name: 'Reino Unido', code: 'GB', dial: '+44', flag: '🇬🇧', priority: 9, aliases: ['reino unido', 'uk', 'inglaterra', 'londres', 'gb'] },
+    { name: 'Itália', code: 'IT', dial: '+39', flag: '🇮🇹', priority: 10, aliases: ['italia', 'italy', 'it', 'roma', 'milao'] },
+    { name: 'Panamá', code: 'PA', dial: '+507', flag: '🇵🇦', priority: 11, aliases: ['panama', 'pa'] },
+    { name: 'Ilhas Cayman', code: 'KY', dial: '+1 345', flag: '🇰🇾', priority: 12, aliases: ['ilhas cayman', 'cayman', 'ky'] },
+    { name: 'Bahamas', code: 'BS', dial: '+1 242', flag: '🇧🇸', priority: 13, aliases: ['bahamas', 'bs'] },
+    { name: 'Ilhas Virgens Britânicas', code: 'VG', dial: '+1 284', flag: '🇻🇬', priority: 14, aliases: ['ilhas virgens britanicas', 'bvi', 'vg'] },
+    { name: 'Singapura', code: 'SG', dial: '+65', flag: '🇸🇬', priority: 15, aliases: ['singapura', 'singapore', 'sg'] },
+    { name: 'Hong Kong', code: 'HK', dial: '+852', flag: '🇭🇰', priority: 16, aliases: ['hong kong', 'hk'] },
+    { name: 'Alemanha', code: 'DE', dial: '+49', flag: '🇩🇪', priority: 17, aliases: ['alemanha', 'germany', 'de', 'berlim', 'frankfurt'] },
+    { name: 'França', code: 'FR', dial: '+33', flag: '🇫🇷', priority: 18, aliases: ['franca', 'france', 'fr', 'paris'] },
+    { name: 'Canadá', code: 'CA', dial: '+1', flag: '🇨🇦', priority: 19, aliases: ['canada', 'ca'] },
+    { name: 'Irlanda', code: 'IE', dial: '+353', flag: '🇮🇪', priority: 20, aliases: ['irlanda', 'ireland', 'ie', 'dublin'] },
+    { name: 'Luxemburgo', code: 'LU', dial: '+352', flag: '🇱🇺', priority: 21, aliases: ['luxemburgo', 'luxembourg', 'lu'] },
+    { name: 'Malta', code: 'MT', dial: '+356', flag: '🇲🇹', priority: 22, aliases: ['malta', 'mt'] },
+    { name: 'Chipre', code: 'CY', dial: '+357', flag: '🇨🇾', priority: 23, aliases: ['chipre', 'cyprus', 'cy'] },
+    { name: 'Argentina', code: 'AR', dial: '+54', flag: '🇦🇷', priority: 24, aliases: ['argentina', 'ar', 'buenos aires'] },
+    { name: 'Chile', code: 'CL', dial: '+56', flag: '🇨🇱', priority: 25, aliases: ['chile', 'cl', 'santiago'] },
+    { name: 'Colômbia', code: 'CO', dial: '+57', flag: '🇨🇴', priority: 26, aliases: ['colombia', 'co', 'bogota', 'medellin'] },
+    { name: 'México', code: 'MX', dial: '+52', flag: '🇲🇽', priority: 27, aliases: ['mexico', 'mx'] },
+    { name: 'Austrália', code: 'AU', dial: '+61', flag: '🇦🇺', priority: 28, aliases: ['australia', 'au', 'sydney'] },
+    { name: 'Holanda', code: 'NL', dial: '+31', flag: '🇳🇱', priority: 29, aliases: ['holanda', 'paises baixos', 'netherlands', 'nl', 'amsterdam'] },
+    { name: 'Bélgica', code: 'BE', dial: '+32', flag: '🇧🇪', priority: 30, aliases: ['belgica', 'belgium', 'be', 'bruxelas'] },
+    { name: 'África do Sul', code: 'ZA', dial: '+27', flag: '🇿🇦', aliases: ['africa do sul', 'south africa', 'za'] },
+    { name: 'Albânia', code: 'AL', dial: '+355', flag: '🇦🇱', aliases: ['albania', 'al'] },
+    { name: 'Andorra', code: 'AD', dial: '+376', flag: '🇦🇩', aliases: ['andorra', 'ad'] },
+    { name: 'Angola', code: 'AO', dial: '+244', flag: '🇦🇴', aliases: ['angola', 'ao', 'luanda'] },
+    { name: 'Antígua e Barbuda', code: 'AG', dial: '+1 268', flag: '🇦🇬', aliases: ['antigua e barbuda', 'ag'] },
+    { name: 'Arábia Saudita', code: 'SA', dial: '+966', flag: '🇸🇦', aliases: ['arabia saudita', 'saudi arabia', 'sa', 'riad'] },
+    { name: 'Argélia', code: 'DZ', dial: '+213', flag: '🇩🇿', aliases: ['argelia', 'algeria', 'dz'] },
+    { name: 'Armênia', code: 'AM', dial: '+374', flag: '🇦🇲', aliases: ['armenia', 'am'] },
+    { name: 'Áustria', code: 'AT', dial: '+43', flag: '🇦🇹', aliases: ['austria', 'at', 'viena'] },
+    { name: 'Azerbaijão', code: 'AZ', dial: '+994', flag: '🇦🇿', aliases: ['azerbaijao', 'azerbaijan', 'az'] },
+    { name: 'Bahrein', code: 'BH', dial: '+973', flag: '🇧🇭', aliases: ['bahrein', 'bahrain', 'bh'] },
+    { name: 'Bangladesh', code: 'BD', dial: '+880', flag: '🇧🇩', aliases: ['bangladesh', 'bd'] },
+    { name: 'Barbados', code: 'BB', dial: '+1 246', flag: '🇧🇧', aliases: ['barbados', 'bb'] },
+    { name: 'Belarus', code: 'BY', dial: '+375', flag: '🇧🇾', aliases: ['belarus', 'bielorrussia', 'by'] },
+    { name: 'Belize', code: 'BZ', dial: '+501', flag: '🇧🇿', aliases: ['belize', 'bz'] },
+    { name: 'Bermudas', code: 'BM', dial: '+1 441', flag: '🇧🇲', aliases: ['bermudas', 'bermuda', 'bm'] },
+    { name: 'Bolívia', code: 'BO', dial: '+591', flag: '🇧🇴', aliases: ['bolivia', 'bo', 'la paz', 'santa cruz'] },
+    { name: 'Bósnia e Herzegovina', code: 'BA', dial: '+387', flag: '🇧🇦', aliases: ['bosnia', 'ba'] },
+    { name: 'Botsuana', code: 'BW', dial: '+267', flag: '🇧🇼', aliases: ['botsuana', 'bw'] },
+    { name: 'Bulgária', code: 'BG', dial: '+359', flag: '🇧🇬', aliases: ['bulgaria', 'bg'] },
+    { name: 'Cabo Verde', code: 'CV', dial: '+238', flag: '🇨🇻', aliases: ['cabo verde', 'cv', 'praia'] },
+    { name: 'Camboja', code: 'KH', dial: '+855', flag: '🇰🇭', aliases: ['camboja', 'cambodia', 'kh'] },
+    { name: 'Catar', code: 'QA', dial: '+974', flag: '🇶🇦', aliases: ['catar', 'qatar', 'qa', 'doha'] },
+    { name: 'Cazaquistão', code: 'KZ', dial: '+7', flag: '🇰🇿', aliases: ['cazaquistao', 'kazakhstan', 'kz'] },
+    { name: 'China', code: 'CN', dial: '+86', flag: '🇨🇳', aliases: ['china', 'cn', 'pequim', 'shanghai'] },
+    { name: 'Coreia do Sul', code: 'KR', dial: '+82', flag: '🇰🇷', aliases: ['coreia do sul', 'south korea', 'kr', 'seul'] },
+    { name: 'Costa do Marfim', code: 'CI', dial: '+225', flag: '🇨🇮', aliases: ['costa do marfim', 'ci'] },
+    { name: 'Costa Rica', code: 'CR', dial: '+506', flag: '🇨🇷', aliases: ['costa rica', 'cr'] },
+    { name: 'Croácia', code: 'HR', dial: '+385', flag: '🇭🇷', aliases: ['croacia', 'croatia', 'hr'] },
+    { name: 'Curaçao', code: 'CW', dial: '+599', flag: '🇨🇼', aliases: ['curacao', 'cw'] },
+    { name: 'Dinamarca', code: 'DK', dial: '+45', flag: '🇩🇰', aliases: ['dinamarca', 'denmark', 'dk', 'copenhague'] },
+    { name: 'Egito', code: 'EG', dial: '+20', flag: '🇪🇬', aliases: ['egito', 'egypt', 'eg', 'cairo'] },
+    { name: 'El Salvador', code: 'SV', dial: '+503', flag: '🇸🇻', aliases: ['el salvador', 'sv'] },
+    { name: 'Equador', code: 'EC', dial: '+593', flag: '🇪🇨', aliases: ['equador', 'ecuador', 'ec', 'quito'] },
+    { name: 'Eslováquia', code: 'SK', dial: '+421', flag: '🇸🇰', aliases: ['eslovaquia', 'slovakia', 'sk'] },
+    { name: 'Eslovênia', code: 'SI', dial: '+386', flag: '🇸🇮', aliases: ['eslovenia', 'slovenia', 'si'] },
+    { name: 'Estônia', code: 'EE', dial: '+372', flag: '🇪🇪', aliases: ['estonia', 'ee', 'tallinn'] },
+    { name: 'Filipinas', code: 'PH', dial: '+63', flag: '🇵🇭', aliases: ['filipinas', 'philippines', 'ph'] },
+    { name: 'Finlândia', code: 'FI', dial: '+358', flag: '🇫🇮', aliases: ['finlandia', 'finland', 'fi', 'helsinque'] },
+    { name: 'Gana', code: 'GH', dial: '+233', flag: '🇬🇭', aliases: ['gana', 'gh'] },
+    { name: 'Geórgia', code: 'GE', dial: '+995', flag: '🇬🇪', aliases: ['georgia', 'ge', 'tbilisi'] },
+    { name: 'Gibraltar', code: 'GI', dial: '+350', flag: '🇬🇮', aliases: ['gibraltar', 'gi'] },
+    { name: 'Grécia', code: 'GR', dial: '+30', flag: '🇬🇷', aliases: ['grecia', 'greece', 'gr', 'atenas'] },
+    { name: 'Guatemala', code: 'GT', dial: '+502', flag: '🇬🇹', aliases: ['guatemala', 'gt'] },
+    { name: 'Guiana', code: 'GY', dial: '+592', flag: '🇬🇾', aliases: ['guiana', 'gy'] },
+    { name: 'Honduras', code: 'HN', dial: '+504', flag: '🇭🇳', aliases: ['honduras', 'hn'] },
+    { name: 'Hungria', code: 'HU', dial: '+36', flag: '🇭🇺', aliases: ['hungria', 'hungary', 'hu', 'budapeste'] },
+    { name: 'Iêmen', code: 'YE', dial: '+967', flag: '🇾🇪', aliases: ['iemen', 'ye'] },
+    { name: 'Índia', code: 'IN', dial: '+91', flag: '🇮🇳', aliases: ['india', 'in', 'nova delhi', 'mumbai'] },
+    { name: 'Indonésia', code: 'ID', dial: '+62', flag: '🇮🇩', aliases: ['indonesia', 'id', 'bali', 'jacarta'] },
+    { name: 'Islândia', code: 'IS', dial: '+354', flag: '🇮🇸', aliases: ['islandia', 'iceland', 'is'] },
+    { name: 'Israel', code: 'IL', dial: '+972', flag: '🇮🇱', aliases: ['israel', 'il', 'tel aviv'] },
+    { name: 'Jamaica', code: 'JM', dial: '+1 876', flag: '🇯🇲', aliases: ['jamaica', 'jm'] },
+    { name: 'Japão', code: 'JP', dial: '+81', flag: '🇯🇵', aliases: ['japao', 'japan', 'jp', 'toquio'] },
+    { name: 'Jordânia', code: 'JO', dial: '+962', flag: '🇯🇴', aliases: ['jordania', 'jo'] },
+    { name: 'Kuwait', code: 'KW', dial: '+965', flag: '🇰🇼', aliases: ['kuwait', 'kw'] },
+    { name: 'Letônia', code: 'LV', dial: '+371', flag: '🇱🇻', aliases: ['letonia', 'latvia', 'lv', 'riga'] },
+    { name: 'Líbano', code: 'LB', dial: '+961', flag: '🇱🇧', aliases: ['libano', 'lb', 'beirute'] },
+    { name: 'Liechtenstein', code: 'LI', dial: '+423', flag: '🇱🇮', aliases: ['liechtenstein', 'li'] },
+    { name: 'Lituânia', code: 'LT', dial: '+370', flag: '🇱🇹', aliases: ['lituania', 'lithuania', 'lt', 'vilnius'] },
+    { name: 'Macedônia do Norte', code: 'MK', dial: '+389', flag: '🇲🇰', aliases: ['macedonia', 'mk'] },
+    { name: 'Malásia', code: 'MY', dial: '+60', flag: '🇲🇾', aliases: ['malasia', 'my', 'kuala lumpur'] },
+    { name: 'Maldivas', code: 'MV', dial: '+960', flag: '🇲🇻', aliases: ['maldivas', 'mv'] },
+    { name: 'Marrocos', code: 'MA', dial: '+212', flag: '🇲🇦', aliases: ['marrocos', 'ma'] },
+    { name: 'Maurício', code: 'MU', dial: '+230', flag: '🇲🇺', aliases: ['mauricio', 'mauritius', 'mu'] },
+    { name: 'Mônaco', code: 'MC', dial: '+377', flag: '🇲🇨', aliases: ['monaco', 'mc', 'monte carlo'] },
+    { name: 'Montenegro', code: 'ME', dial: '+382', flag: '🇲🇪', aliases: ['montenegro', 'me'] },
+    { name: 'Moçambique', code: 'MZ', dial: '+258', flag: '🇲🇿', aliases: ['mocambique', 'mz', 'maputo'] },
+    { name: 'Namíbia', code: 'NA', dial: '+264', flag: '🇳🇦', aliases: ['namibia', 'na'] },
+    { name: 'Nicarágua', code: 'NI', dial: '+505', flag: '🇳🇮', aliases: ['nicaragua', 'ni'] },
+    { name: 'Nigéria', code: 'NG', dial: '+234', flag: '🇳🇬', aliases: ['nigeria', 'ng'] },
+    { name: 'Noruega', code: 'NO', dial: '+47', flag: '🇳🇴', aliases: ['noruega', 'norway', 'no', 'oslo'] },
+    { name: 'Nova Zelândia', code: 'NZ', dial: '+64', flag: '🇳🇿', aliases: ['nova zelandia', 'new zealand', 'nz', 'auckland'] },
+    { name: 'Omã', code: 'OM', dial: '+968', flag: '🇴🇲', aliases: ['oma', 'oman', 'om'] },
+    { name: 'Paquistão', code: 'PK', dial: '+92', flag: '🇵🇰', aliases: ['paquistao', 'pakistan', 'pk'] },
+    { name: 'Peru', code: 'PE', dial: '+51', flag: '🇵🇪', aliases: ['peru', 'pe', 'lima'] },
+    { name: 'Polinésia Francesa', code: 'PF', dial: '+689', flag: '🇵🇫', aliases: ['polinesia francesa', 'tahiti', 'pf'] },
+    { name: 'Polônia', code: 'PL', dial: '+48', flag: '🇵🇱', aliases: ['polonia', 'poland', 'pl', 'varsovia'] },
+    { name: 'Porto Rico', code: 'PR', dial: '+1', flag: '🇵🇷', aliases: ['porto rico', 'puerto rico', 'pr', 'san juan'] },
+    { name: 'Quênia', code: 'KE', dial: '+254', flag: '🇰🇪', aliases: ['quenia', 'ke'] },
+    { name: 'República Dominicana', code: 'DO', dial: '+1', flag: '🇩🇴', aliases: ['republica dominicana', 'do', 'punta cana'] },
+    { name: 'República Tcheca', code: 'CZ', dial: '+420', flag: '🇨🇿', aliases: ['republica tcheca', 'czech republic', 'cz', 'praga'] },
+    { name: 'Romênia', code: 'RO', dial: '+40', flag: '🇷🇴', aliases: ['romenia', 'romania', 'ro'] },
+    { name: 'Rússia', code: 'RU', dial: '+7', flag: '🇷🇺', aliases: ['russia', 'ru', 'moscou'] },
+    { name: 'Santa Lúcia', code: 'LC', dial: '+1 758', flag: '🇱🇨', aliases: ['santa lucia', 'lc'] },
+    { name: 'São Cristóvão e Névis', code: 'KN', dial: '+1 869', flag: '🇰🇳', aliases: ['sao cristovao e nevis', 'st kitts', 'kn'] },
+    { name: 'São Marino', code: 'SM', dial: '+378', flag: '🇸🇲', aliases: ['sao marino', 'sm'] },
+    { name: 'São Tomé e Príncipe', code: 'ST', dial: '+239', flag: '🇸🇹', aliases: ['sao tome e principe', 'st'] },
+    { name: 'São Vicente e Granadinas', code: 'VC', dial: '+1 784', flag: '🇻🇨', aliases: ['sao vicente e granadinas', 'vc'] },
+    { name: 'Senegal', code: 'SN', dial: '+221', flag: '🇸🇳', aliases: ['senegal', 'sn'] },
+    { name: 'Sérvia', code: 'RS', dial: '+381', flag: '🇷🇸', aliases: ['servia', 'serbia', 'rs', 'belgrado'] },
+    { name: 'Seychelles', code: 'SC', dial: '+248', flag: '🇸🇨', aliases: ['seychelles', 'sc'] },
+    { name: 'Suécia', code: 'SE', dial: '+46', flag: '🇸🇪', aliases: ['suecia', 'sweden', 'se', 'estocolmo'] },
+    { name: 'Suriname', code: 'SR', dial: '+597', flag: '🇸🇷', aliases: ['suriname', 'sr'] },
+    { name: 'Tailândia', code: 'TH', dial: '+66', flag: '🇹🇭', aliases: ['tailandia', 'thailand', 'th', 'bangkok'] },
+    { name: 'Taiwan', code: 'TW', dial: '+886', flag: '🇹🇼', aliases: ['taiwan', 'tw', 'taipei'] },
+    { name: 'Tanzânia', code: 'TZ', dial: '+255', flag: '🇹🇿', aliases: ['tanzania', 'tz', 'zanzibar'] },
+    { name: 'Timor-Leste', code: 'TL', dial: '+670', flag: '🇹🇱', aliases: ['timor leste', 'tl'] },
+    { name: 'Trinidad e Tobago', code: 'TT', dial: '+1 868', flag: '🇹🇹', aliases: ['trinidad e tobago', 'tt'] },
+    { name: 'Tunísia', code: 'TN', dial: '+216', flag: '🇹🇳', aliases: ['tunisia', 'tn'] },
+    { name: 'Turquia', code: 'TR', dial: '+90', flag: '🇹🇷', aliases: ['turquia', 'turkey', 'tr', 'istambul'] },
+    { name: 'Ucrânia', code: 'UA', dial: '+380', flag: '🇺🇦', aliases: ['ucrania', 'ukraine', 'ua', 'kiev'] },
+    { name: 'Vanuatu', code: 'VU', dial: '+678', flag: '🇻🇺', aliases: ['vanuatu', 'vu'] },
+    { name: 'Venezuela', code: 'VE', dial: '+58', flag: '🇻🇪', aliases: ['venezuela', 've', 'caracas'] },
+    { name: 'Vietnã', code: 'VN', dial: '+84', flag: '🇻🇳', aliases: ['vietna', 'vietnam', 'vn'] }
+  ];
+
+  function normStr(str) {
+    return (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
+
+  function diagnosticForm(){return{
+    step:1,
+    total:7,
+    dir:1,
+    sending:false,
+    sent:false,
+    error:'',
+    startedAt:Date.now(),
+    website:'',
+    needs:[
+      'Saída fiscal do Brasil',
+      'Planejamento tributário internacional',
+      'Estrutura offshore',
+      'Regularização de criptoativos',
+      'Movimentação de patrimônio em criptoativos',
+      'Planejamento sucessório',
+      'Internacionalização patrimonial',
+      'Outro'
+    ],
+    assetsOptions:[
+      'Até R$ 1 milhão',
+      'R$ 1 milhão a R$ 3 milhões',
+      'R$ 3 milhões a R$ 10 milhões',
+      'R$ 10 milhões a R$ 50 milhões',
+      'Acima de R$ 50 milhões',
+      'Prefiro informar durante o atendimento'
+    ],
+    form:{need:'',name:'',whatsapp:'',email:'',country:'',assets:'',message:''},
+
+    phoneCountry: COUNTRIES_DATA[0],
+    phoneDropdownOpen: false,
+    phoneSearch: '',
+    rawPhone: '',
+
+    countryDropdownOpen: false,
+    countryQuery: '',
+    selectedCountryFlag: '',
+    countryHighlightIndex: -1,
+
+    init(){
+      this.$el.addEventListener('focusin',()=>loadRecaptcha(),{once:true});
+      this.focusStep();
+    },
     get progress(){return this.sent?100:Math.round((this.step-1)/this.total*100);},
     letter(i){return String.fromCharCode(65+i);},
-    focusStep(){this.$nextTick(()=>setTimeout(()=>document.querySelector('[data-tl-step="'+this.step+'"] .tl-input')?.focus({preventScroll:true}),260));},
-    // Seleção de opção: apenas marca a opção sem avançar automaticamente
+    focusStep(){
+      this.$nextTick(()=>setTimeout(()=>{
+        const el = document.querySelector('[data-tl-step="'+this.step+'"] .tl-input');
+        if(el) el.focus({preventScroll:true});
+      },260));
+    },
     pick(field,value){this.form[field]=value;this.error='';},
-    // Teclas A, B, C… marcam opções nas etapas de múltipla escolha
     hotkey(e){
       if(this.sent||e.metaKey||e.ctrlKey||e.altKey||e.target.matches('input,textarea'))return;
       if(e.key==='Enter'&&this.step<this.total){e.preventDefault();this.next();return;}
@@ -142,24 +328,204 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       const msg = `Olá! Acabei de preencher o diagnóstico no site. Meu objetivo principal é ${needText}. Gostaria de entender os próximos passos.`;
       return 'https://wa.me/5511953448220?text='+encodeURIComponent(msg);
     },
+
+    get phonePlaceholder(){
+      if(this.phoneCountry.code==='BR')return '(11) 90000-0000';
+      if(this.phoneCountry.code==='US'||this.phoneCountry.code==='CA')return '(555) 000-0000';
+      if(this.phoneCountry.code==='PT')return '912 345 678';
+      return '00000-0000';
+    },
+    togglePhoneDropdown(){
+      this.phoneDropdownOpen = !this.phoneDropdownOpen;
+      if(this.phoneDropdownOpen){
+        this.phoneSearch = '';
+        this.$nextTick(()=>{
+          document.querySelector('.tl-phone-search-input')?.focus();
+        });
+      }
+    },
+    filteredPhoneCountries(){
+      const q = normStr(this.phoneSearch);
+      if(!q) return COUNTRIES_DATA;
+      return COUNTRIES_DATA.filter(c => {
+        if(normStr(c.name).includes(q)) return true;
+        if(c.dial.replace(/\D/g,'').includes(q.replace(/\D/g,'')) && q.replace(/\D/g,'').length>0) return true;
+        if(normStr(c.code).includes(q)) return true;
+        if(c.aliases && c.aliases.some(a => normStr(a).includes(q) || q.includes(normStr(a)))) return true;
+        return false;
+      });
+    },
+    choosePhoneCountry(c){
+      this.phoneCountry = c;
+      this.phoneDropdownOpen = false;
+      this.phoneSearch = '';
+      this.formatAndSyncPhone(this.rawPhone);
+      this.$nextTick(()=>{
+        document.querySelector('.tl-phone-input')?.focus();
+      });
+    },
+    selectFirstPhoneCountry(){
+      const list = this.filteredPhoneCountries();
+      if(list.length) this.choosePhoneCountry(list[0]);
+    },
+    onPhoneInput(e){
+      let val = e.target.value;
+      const trimmed = val.trim();
+      if(trimmed.startsWith('+')){
+        const sorted = [...COUNTRIES_DATA].sort((a,b)=>b.dial.replace(/\s+/g,'').length - a.dial.replace(/\s+/g,'').length);
+        for(const c of sorted){
+          const dialClean = c.dial.replace(/\s+/g,'');
+          const valClean = trimmed.replace(/\s+/g,'');
+          if(valClean.startsWith(dialClean)){
+            this.phoneCountry = c;
+            val = valClean.slice(dialClean.length);
+            break;
+          }
+        }
+      }
+      this.formatAndSyncPhone(val);
+    },
+    formatAndSyncPhone(val){
+      if(this.phoneCountry.code==='BR'){
+        const digits = (val||'').replace(/\D/g,'').slice(0,11);
+        if(!digits) this.rawPhone = '';
+        else if(digits.length<=2) this.rawPhone = '(' + digits;
+        else if(digits.length<=6) this.rawPhone = '(' + digits.slice(0,2) + ') ' + digits.slice(2);
+        else if(digits.length<=10) this.rawPhone = '(' + digits.slice(0,2) + ') ' + digits.slice(2,6) + '-' + digits.slice(6);
+        else this.rawPhone = '(' + digits.slice(0,2) + ') ' + digits.slice(2,7) + '-' + digits.slice(7);
+      } else {
+        this.rawPhone = val;
+      }
+      const clean = (this.rawPhone||'').trim();
+      this.form.whatsapp = clean ? `${this.phoneCountry.dial} ${clean}` : '';
+      if(this.error) this.error = '';
+    },
+
+    filteredCountries(){
+      const q = normStr(this.countryQuery);
+      if(!q) return COUNTRIES_DATA;
+      return COUNTRIES_DATA.filter(c => {
+        if(normStr(c.name).includes(q)) return true;
+        if(normStr(c.code) === q) return true;
+        if(c.aliases && c.aliases.some(a => normStr(a).includes(q))) return true;
+        return false;
+      });
+    },
+    openCountryDropdown(){
+      this.countryDropdownOpen = true;
+      this.countryHighlightIndex = 0;
+    },
+    toggleCountryDropdown(){
+      this.countryDropdownOpen = !this.countryDropdownOpen;
+      if(this.countryDropdownOpen){
+        this.countryHighlightIndex = 0;
+        this.$nextTick(()=>{
+          document.querySelector('.tl-country-input')?.focus();
+        });
+      }
+    },
+    onCountryInput(){
+      this.form.country = this.countryQuery;
+      this.countryDropdownOpen = true;
+      this.countryHighlightIndex = 0;
+      const q = normStr(this.countryQuery);
+      const match = COUNTRIES_DATA.find(c => normStr(c.name) === q);
+      this.selectedCountryFlag = match ? match.flag : '';
+      if(this.error) this.error = '';
+    },
+    chooseCountry(c){
+      this.countryQuery = c.name;
+      this.form.country = c.name;
+      this.selectedCountryFlag = c.flag;
+      this.countryDropdownOpen = false;
+      this.countryHighlightIndex = -1;
+      this.error = '';
+      this.$nextTick(()=>{
+        document.querySelector('.tl-country-input')?.focus();
+      });
+    },
+    clearCountry(){
+      this.countryQuery = '';
+      this.form.country = '';
+      this.selectedCountryFlag = '';
+      this.countryDropdownOpen = true;
+      this.countryHighlightIndex = 0;
+      this.$nextTick(()=>{
+        document.querySelector('.tl-country-input')?.focus();
+      });
+    },
+    moveCountryHighlight(delta){
+      if(!this.countryDropdownOpen){
+        this.countryDropdownOpen = true;
+        this.countryHighlightIndex = 0;
+        return;
+      }
+      const list = this.filteredCountries();
+      if(!list.length) return;
+      this.countryHighlightIndex = Math.max(0, Math.min(list.length - 1, (this.countryHighlightIndex < 0 ? 0 : this.countryHighlightIndex) + delta));
+      this.$nextTick(()=>{
+        const el = document.querySelector('.tl-country-menu .tl-dropdown-item.is-highlighted');
+        el?.scrollIntoView({block:'nearest'});
+      });
+    },
+    selectHighlightedCountry(){
+      if(this.countryDropdownOpen){
+        const list = this.filteredCountries();
+        if(list.length > 0){
+          const idx = this.countryHighlightIndex >= 0 ? this.countryHighlightIndex : 0;
+          this.chooseCountry(list[idx]);
+          return;
+        }
+        this.countryDropdownOpen = false;
+      } else {
+        this.next();
+      }
+    },
+
     validateStep(){
       this.error='';
       const f=this.form;
       if(this.step===1&&!f.need){this.error='Escolha uma opção para continuar.';return false;}
       if(this.step===2&&f.name.trim().length<3){this.error='Informe seu nome completo.';return false;}
-      if(this.step===3&&f.whatsapp.replace(/\D/g,'').length<8){this.error='Informe um WhatsApp válido, com DDD.';return false;}
+      if(this.step===3){
+        const digits = (this.rawPhone||'').replace(/\D/g,'');
+        if(this.phoneCountry.code==='BR'){
+          if(digits.length<10){this.error='Informe seu WhatsApp com DDD (ex.: 11 98765-4321).';return false;}
+        } else {
+          if(digits.length<7){this.error='Informe um número de WhatsApp válido.';return false;}
+        }
+      }
       if(this.step===4&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())){this.error='Informe um e-mail válido.';return false;}
       if(this.step===6&&!f.assets){this.error='Escolha uma opção para continuar.';return false;}
       return true;
     },
-    next(){if(this.validateStep()&&this.step<this.total){this.dir=1;this.step++;this.focusStep();}},
-    back(){this.error='';if(this.step>1){this.dir=-1;this.step--;this.focusStep();}},
+    next(){
+      this.phoneDropdownOpen = false;
+      this.countryDropdownOpen = false;
+      if(this.validateStep()&&this.step<this.total){
+        this.dir=1;
+        this.step++;
+        window.scrollTo({top:0,behavior:'smooth'});
+        this.focusStep();
+      }
+    },
+    back(){
+      this.phoneDropdownOpen = false;
+      this.countryDropdownOpen = false;
+      this.error='';
+      if(this.step>1){
+        this.dir=-1;
+        this.step--;
+        window.scrollTo({top:0,behavior:'smooth'});
+        this.focusStep();
+      }
+    },
     async submit(){
-      // Enter nas etapas anteriores à última apenas avança; nunca envia nem mostra sucesso
+      this.phoneDropdownOpen = false;
+      this.countryDropdownOpen = false;
       if(this.step<this.total){this.next();return;}
       if(this.sending)return;
       if(!this.validateStep())return;
-      // Honeypot preenchido ou envio rápido demais = robô: finge sucesso sem enviar
       if(this.website||Date.now()-this.startedAt<4000){this.sent=true;return;}
       this.sending=true;this.error='';
       try{
@@ -178,7 +544,8 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
         console.error(e);
         this.error='Não foi possível enviar sua solicitação. Tente novamente ou fale conosco pelo WhatsApp.';
       }finally{this.sending=false;}
-    }}}
+    }
+  }}
 
   const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revealObserver.unobserve(e.target)}}),{threshold:.12});
   function initReveals(){
