@@ -2400,7 +2400,7 @@ main .grid.gap-px[class*="bg-white/10"]{
 .client-benefit-top svg{width:24px;height:24px;stroke-width:1.5}
 .client-benefit h3{max-width:310px;margin:0;color:#f2f6fa;font:700 clamp(1.2rem,1.65vw,1.5rem)/1.22 'Plus Jakarta Sans',sans-serif;letter-spacing:-.035em}
 .client-benefit p{max-width:340px;margin:14px 0 0;color:#a0acb8;font:400 14px/1.75 'Inter',sans-serif}
-.client-benefits-action{display:flex;justify-content:center;margin-top:34px}
+.client-benefits-action,.how-we-work-action{display:flex;justify-content:center;margin-top:38px}
 @media(max-width:1000px){
   .client-benefits-heading{grid-template-columns:1fr;gap:22px}
   .client-benefits-heading .copy{justify-self:start;max-width:600px}
@@ -2414,7 +2414,7 @@ main .grid.gap-px[class*="bg-white/10"]{
   .client-benefit,.client-benefit:nth-child(3n){padding:26px 0 28px;border-right:0}
   .client-benefit-top{margin-bottom:16px}
   .client-benefit h3,.client-benefit p{max-width:none}
-  .client-benefits-action .button-dark{width:100%}
+  .client-benefits-action .button-dark,.how-we-work-action .button-dark{width:100%}
 }
 
 /* Office and direct contact details shared by every footer. */
