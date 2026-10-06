@@ -1265,7 +1265,7 @@ body{
   transform-origin:center;
   will-change:transform;
 }
-.tech-network-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.65}
+.tech-network-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.90}
 .tech-grid-plane{
   position:absolute;
   inset:-12%;
@@ -1404,7 +1404,7 @@ main .section:nth-of-type(4n+2):not(.jurisdiction-editorial-section):not(.integr
   .tech-backdrop{opacity:.52;inset:-4vh -20vw}
   .tech-grid-plane{background-size:54px 54px;opacity:.20}
   .tech-arc{width:135vw;right:-76vw;top:24vh;opacity:.48}
-  .tech-network-canvas{opacity:.28}
+  .tech-network-canvas{opacity:.53}
   .ambient-light-field{transition:transform .75s ease}
   .ambient-light.a{width:126vw!important;height:126vw!important;right:-50vw!important;top:-10vh!important;filter:blur(84px)!important}
   .ambient-light.b{width:112vw!important;height:112vw!important;left:-64vw!important;top:42vh!important;filter:blur(92px)!important}
