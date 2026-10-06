@@ -51,7 +51,7 @@ for(const [slug,family,style] of [['inter','Inter','normal'],['plus-jakarta-sans
   await copyFile(`node_modules/@fontsource-variable/${slug}/LICENSE`,`assets/${slug}-LICENSE.txt`);
 }
 const theme={extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Plus Jakarta Sans','sans-serif']},colors:{ink:'#0B0B0C',paper:'#FFFFFF',fog:'#F7F7F5',line:'#E8E8E4',muted:'#6A6A66',blue:'#55B3F8'},boxShadow:{soft:'0 22px 70px rgba(12,12,12,.07)',float:'0 35px 100px rgba(12,12,12,.10)'}}};
-const usedStyles=await postcss([purgecss({content:[...pages,'script.js'],defaultExtractor:content=>content.match(/[^<>"'`\s]*[^<>"'`\s:]/g)||[],safelist:{standard:['html','body','in','active','open','scroll-ink','scroll-word-group','scroll-char',/^lucide/,/^footer-contact/]}})]).process(await utf8('style.css'),{from:'style.css'});
+const usedStyles=await postcss([purgecss({content:[...pages,'script.js'],defaultExtractor:content=>content.match(/[^<>"'`\s]*[^<>"'`\s:]/g)||[],safelist:{standard:['html','body','in','active','open','scroll-ink','scroll-word-group','scroll-char',/^lucide/,/^footer-contact/,/^faq-/]}})]).process(await utf8('style.css'),{from:'style.css'});
 const cssInput='@tailwind base;\n@tailwind components;\n'+fonts+usedStyles.css+'\n@tailwind utilities;';
 const css=await postcss([tailwind({content:[...pages,'./script.js'],theme}),cssnano({preset:'default'})]).process(cssInput,{from:undefined});
 const cssPath=await asset('site','css',css.css);
