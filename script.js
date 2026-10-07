@@ -104,9 +104,25 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       formData.append('event_source_url',window.location.href);
 
       try{
+        const urlParams=new URLSearchParams(window.location.search);
+        const testCode=urlParams.get('test_event_code');
+        if(testCode)formData.append('test_event_code',testCode);
+      }catch(_){}
+
+      try{
         const url='https://script.google.com/macros/s/AKfycbyeoX_kKGYEhr_1rc7t5yZDTtBgu6phBakDdHIEa4W5n0LU5PtbFJPOnL66My7PnSxR/exec';
         if(!url.includes('COLOQUE_SUA_URL')) await fetch(url,{method:'POST',body:formData,mode:'no-cors'});
       }catch(e){console.error(e);}
+
+      try{
+        if(typeof window.fbq==='function'){
+          window.fbq('track','Lead',{
+            content_name:this.form.subject||'Contato',
+            currency:'BRL',
+            value:150
+          });
+        }
+      }catch(_){}
 
       const clean=value=>(value||'').toString().trim();
       const message=[
@@ -577,6 +593,12 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
         formData.append('client_user_agent',navigator.userAgent||'');
         formData.append('event_source_url',window.location.href);
 
+        try{
+          const urlParams=new URLSearchParams(window.location.search);
+          const testCode=urlParams.get('test_event_code');
+          if(testCode)formData.append('test_event_code',testCode);
+        }catch(_){}
+
         if(await loadRecaptcha()){
           const token=await window.grecaptcha.execute(RECAPTCHA_SITE_KEY,{action:'diagnostico'});
           formData.append('recaptchaToken',token);
@@ -589,6 +611,17 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
         this.isQualified = (typeof data.qualified === 'boolean')
           ? data.qualified
           : this.checkQualified(this.form.assets);
+
+        // Disparo do evento Lead no Meta Pixel (navegador)
+        try{
+          if(typeof window.fbq==='function'){
+            window.fbq('track','Lead',{
+              content_name:this.form.need||'Diagnóstico',
+              currency:'BRL',
+              value:this.checkQualified(this.form.assets)?150:30
+            });
+          }
+        }catch(_){}
 
         this.sent=true;
         this.$nextTick(()=>{ window.lucide?.createIcons(); });
