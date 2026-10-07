@@ -186,7 +186,7 @@
 <div class="tl-progress" aria-hidden="true"><span :style="'width:'+progress+'%'"></span></div>
 <section class="tl-stage"><form class="tl-form" @submit.prevent="submit()" novalidate>
 <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden"><label>Não preencha este campo<input autocomplete="off" name="website" tabindex="-1" x-model="website"/></label></div>
-<div class="tl-step" data-tl-step="1" x-show="step===1&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to">
+<div class="tl-step" data-tl-step="1" x-show="step===1&&!sent">
 <p class="tl-count"><span>1</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h1 class="tl-question">Qual é a sua principal necessidade?</h1><p class="tl-hint">Escolha a opção que mais se aproxima do seu momento.</p>
 <div class="tl-options" role="radiogroup" aria-label="Qual é a sua principal necessidade?">
