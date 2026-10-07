@@ -56,6 +56,19 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     {name:'Contas & Infraestrutura',body:'Contas bancárias, instituições financeiras e demais recursos necessários para que a estrutura funcione garantindo liquidez e baixos custos.',tags:['Bancos','Fluxo','Execução']}
   ]}}
 
+  function getMetaCookie(name) {
+    try {
+      const match = document.cookie.match(new RegExp('(?:^|;\\s*)' + name + '=([^;]*)'));
+      if (match && match[1]) return decodeURIComponent(match[1]);
+      if (name === '_fbc') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fbclid = urlParams.get('fbclid');
+        if (fbclid) return `fb.1.${Date.now()}.${fbclid}`;
+      }
+    } catch (_) {}
+    return '';
+  }
+
   function contactForm(){return{
     subjectOpen:false,
     subjectError:false,
@@ -82,6 +95,14 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       const formData=new FormData();
       formData.append('formType','Contato');
       for(const key in this.form)formData.append(key,this.form[key]);
+
+      const fbp=getMetaCookie('_fbp');
+      const fbc=getMetaCookie('_fbc');
+      if(fbp)formData.append('fbp',fbp);
+      if(fbc)formData.append('fbc',fbc);
+      formData.append('client_user_agent',navigator.userAgent||'');
+      formData.append('event_source_url',window.location.href);
+
       try{
         const url='https://script.google.com/macros/s/AKfycbxeetsC3WEJWW6KTZxkLcDwobfGlHC7XUO0qDYtGhlD45pa57HcoBv1II4EXOgiGOh3/exec';
         if(!url.includes('COLOQUE_SUA_URL')) await fetch(url,{method:'POST',body:formData,mode:'no-cors'});
@@ -548,6 +569,14 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
         const formData=new FormData();
         formData.append('formType','Diagnóstico');
         for(const key in this.form)formData.append(key,this.form[key]);
+
+        const fbp=getMetaCookie('_fbp');
+        const fbc=getMetaCookie('_fbc');
+        if(fbp)formData.append('fbp',fbp);
+        if(fbc)formData.append('fbc',fbc);
+        formData.append('client_user_agent',navigator.userAgent||'');
+        formData.append('event_source_url',window.location.href);
+
         if(await loadRecaptcha()){
           const token=await window.grecaptcha.execute(RECAPTCHA_SITE_KEY,{action:'diagnostico'});
           formData.append('recaptchaToken',token);
