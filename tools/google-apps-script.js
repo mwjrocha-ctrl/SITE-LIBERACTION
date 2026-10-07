@@ -75,6 +75,11 @@ function doPost(e) {
   }
 }
 
+function doGet(e) {
+  return ContentService.createTextOutput(JSON.stringify({ ok: true, status: 'online', service: 'Liberaction Backend' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 function out_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
