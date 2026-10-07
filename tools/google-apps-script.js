@@ -145,6 +145,14 @@ function sendMetaCapiLead(p, e) {
       data: [eventData]
     };
 
+    var testEventCode = (typeof PropertiesService !== 'undefined' && PropertiesService.getScriptProperties && PropertiesService.getScriptProperties().getProperty('TEST_EVENT_CODE'))
+      || (process.env && process.env.TEST_EVENT_CODE)
+      || p.test_event_code
+      || '';
+    if (testEventCode) {
+      payload.test_event_code = String(testEventCode).trim();
+    }
+
     var url = `https://graph.facebook.com/v20.0/${process.env.META_PIXEL_ID}/events?access_token=${capiToken}`;
 
     if (typeof UrlFetchApp !== 'undefined' && UrlFetchApp.fetch) {
