@@ -94,8 +94,8 @@ for(const [path,original] of documents){
     .replace(/\s*<script[^>]+src="https:\/\/(?:cdn\.tailwindcss\.com|cdn\.jsdelivr\.net|unpkg\.com)[^"]*"[^>]*><\/script>/g,'')
     .replace(/\s*<script>\s*tailwind\.config\s*=[\s\S]*?<\/script>/g,'')
     .replace(/\s*<script[^>]+src="(?:script\.js|assets\/app\.[^"]+\.js)"[^>]*><\/script>/g,'')
-    .replace(/\s*<link[^>]+rel="preload"[^>]*>/g,'')
-    .replace(/<link rel="stylesheet" href="(?:style\.css|assets\/site\.[^"]+\.css)"[^\/]*\/>(?:\s*<noscript><link rel="stylesheet"[^>]*><\/noscript>)?/g,headInject)
+    .replace(/\s*<link rel="stylesheet"[^>]*>(?:\s*<noscript><link rel="stylesheet"[^>]*><\/noscript>)?/g,'')
+    .replace('</head>', `  ${headInject}\n</head>`)
     .replace(/ x-init="init\(\)"/g,'');
   if(!html.includes('class="footer-contact"')){
     html=html.replace(/(<p class="mt-4 max-w-sm text-sm leading-7 text-white\/43">[^<]*<\/p>)/,`$1${footerContact}`);
