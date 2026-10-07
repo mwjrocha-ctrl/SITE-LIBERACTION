@@ -268,6 +268,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     dir:1,
     sending:false,
     sent:false,
+    isQualified:false,
     error:'',
     startedAt:Date.now(),
     website:'',
@@ -305,6 +306,14 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       this.$el.addEventListener('focusin',()=>loadRecaptcha(),{once:true});
       this.focusStep();
     },
+    checkQualified(assets){
+      const a = (assets || '').toString().toLowerCase().trim();
+      if(!a) return false;
+      if(a.includes('até r$ 1') || a.includes('ate r$ 1') || a.includes('até 1') || a.includes('ate 1')) {
+        return false;
+      }
+      return true;
+    },
     get progress(){return this.sent?100:Math.round((this.step-1)/this.total*100);},
     letter(i){return String.fromCharCode(65+i);},
     focusStep(){
@@ -324,8 +333,10 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     },
     get waUrl(){
       const clean=v=>(v||'').toString().trim();
-      const needText = clean(this.form.need) || 'Internacionalização patrimonial';
-      const msg = `Olá! Acabei de preencher o diagnóstico no site. Meu objetivo principal é ${needText}. Gostaria de entender os próximos passos.`;
+      const name = clean(this.form.name);
+      const need = clean(this.form.need) || 'Internacionalização patrimonial';
+      const greeting = name ? `Olá, Dra. Victória! Meu nome é ${name}.` : 'Olá, Dra. Victória!';
+      const msg = `${greeting} Enviei minha solicitação no site sobre "${need}" e gostaria de dar início ao atendimento prioritário e confidencial.`;
       return 'https://wa.me/5511953448220?text='+encodeURIComponent(msg);
     },
 
@@ -526,7 +537,12 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       if(this.step<this.total){this.next();return;}
       if(this.sending)return;
       if(!this.validateStep())return;
-      if(this.website||Date.now()-this.startedAt<4000){this.sent=true;return;}
+      if(this.website||Date.now()-this.startedAt<4000){
+        this.isQualified = this.checkQualified(this.form.assets);
+        this.sent = true;
+        this.$nextTick(()=>{ window.lucide?.createIcons(); });
+        return;
+      }
       this.sending=true;this.error='';
       try{
         const formData=new FormData();
@@ -539,10 +555,17 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
         const res=await fetch(FORM_ENDPOINT,{method:'POST',body:formData});
         const data=await res.json();
         if(!data||data.ok!==true)throw new Error((data&&data.error)||'Falha no envio');
+
+        // Backend valida a qualificação; fallback local seguro
+        this.isQualified = (typeof data.qualified === 'boolean')
+          ? data.qualified
+          : this.checkQualified(this.form.assets);
+
         this.sent=true;
+        this.$nextTick(()=>{ window.lucide?.createIcons(); });
       }catch(e){
         console.error(e);
-        this.error='Não foi possível enviar sua solicitação. Tente novamente ou fale conosco pelo WhatsApp.';
+        this.error='Não foi possível enviar sua solicitação. Por favor, tente novamente.';
       }finally{this.sending=false;}
     }
   }}

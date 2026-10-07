@@ -105,8 +105,8 @@
   </script>
   <link rel="preload" href="assets/plus-jakarta-sans.153fc85b7029.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/inter.3100e775e861.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="assets/site.de7bb1a96aac.css" />
-  <script defer src="assets/app.cc65f3ac20e3.js"></script>
+  <link rel="stylesheet" href="assets/site.29bbbf9726d2.css" />
+  <script defer src="assets/app.b3850833bf7a.js"></script>
   <link rel="describedby" type="text/plain" href="https://liberaction.io/llms.txt" />
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
@@ -232,9 +232,28 @@
 <textarea class="tl-input tl-textarea" rows="4" placeholder="Escreva aqui…" x-model="form.message" @keydown.meta.enter.prevent="submit()" @keydown.ctrl.enter.prevent="submit()" aria-label="Mensagem"></textarea>
 <div class="tl-actions"><button class="button-dark" type="submit" :disabled="sending"><span x-text="sending?'Enviando…':'Enviar solicitação'"></span> <i data-lucide="send" aria-hidden="true"></i></button><span class="tl-key"><b>Ctrl/⌘ + Enter</b> para enviar</span></div>
 <p class="tl-legal">Protegido por reCAPTCHA. Aplicam-se a <a href="https://policies.google.com/privacy" rel="noopener noreferrer" target="_blank">Política de Privacidade</a> e os <a href="https://policies.google.com/terms" rel="noopener noreferrer" target="_blank">Termos de Serviço</a> do Google. O envio não constitui aconselhamento jurídico, tributário ou financeiro.</p></div><div class="tl-step tl-done" x-show="sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak role="status">
+<div x-show="isQualified" class="tl-scenario tl-scenario-a">
 <p class="tl-count"><span><i data-lucide="check" aria-hidden="true"></i></span></p>
-<h2 class="tl-question">Recebemos sua solicitação.</h2><p class="tl-hint">Nossa equipe fará uma análise inicial das informações enviadas. Se preferir atendimento imediato, continue diretamente no WhatsApp:</p>
-<div class="tl-actions"><a class="button-dark" :href="waUrl" target="_blank" rel="noopener noreferrer">Continuar no WhatsApp com a equipe <i data-lucide="arrow-right" aria-hidden="true"></i></a><a class="button-light" href="pt/">Voltar ao início</a></div></div>
+<h2 class="tl-question">Solicitação enviada com sucesso.</h2>
+<p class="tl-hint tl-priority-hint">A sua análise requer atendimento prioritário e confidencial com a equipa da Dra. Victória Galasso.</p>
+<div class="tl-actions">
+<a class="tl-btn-priority-wa" :href="waUrl" target="_blank" rel="noopener noreferrer">
+<svg class="lucide tl-wa-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+<span>Falar com a Dra. Victória no WhatsApp agora</span>
+<i data-lucide="arrow-right" aria-hidden="true"></i>
+</a>
+<a class="button-light" href="pt/">Voltar ao início</a>
+</div>
+</div>
+<div x-show="!isQualified" class="tl-scenario tl-scenario-b">
+<p class="tl-count"><span><i data-lucide="check" aria-hidden="true"></i></span></p>
+<h2 class="tl-question">Solicitação enviada com sucesso.</h2>
+<p class="tl-hint">Avaliaremos as informações fornecidas e entraremos em contacto por e-mail caso haja enquadramento para os nossos serviços.</p>
+<div class="tl-actions">
+<a class="button-light" href="pt/">Voltar ao início</a>
+</div>
+</div>
+</div>
 <p class="tl-error" role="alert" x-show="error" x-text="error" x-cloak></p>
 </form>
 <div class="tl-nav" x-show="!sent" x-cloak><span class="tl-step-label"><b x-text="step"></b> de <span x-text="total"></span></span><button type="button" class="tl-nav-btn" aria-label="Pergunta anterior" @click="back()" :disabled="step===1"><i data-lucide="chevron-up" aria-hidden="true"></i></button><button type="button" class="tl-nav-btn" aria-label="Próxima pergunta" @click="next()" :disabled="step===total"><i data-lucide="chevron-down" aria-hidden="true"></i></button></div>

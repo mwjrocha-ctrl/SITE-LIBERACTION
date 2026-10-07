@@ -20,9 +20,27 @@ function doPost(e) {
     }
     if (!p.name || !p.email || !p.whatsapp) return out_({ ok: false, error: 'dados incompletos' });
 
+    // Validação de qualificação de lead:
+    // Cenário B (Não Qualificado): "Até R$ 1 milhão"
+    // Cenário A (Qualificado): R$ 1M a R$ 3M, R$ 3M a R$ 10M, R$ 10M+, "Prefiro informar", etc.
+    var assets = (p.assets || '').toString().toLowerCase().trim();
+    var isUnqualified = assets.indexOf('até r$ 1') !== -1 || assets.indexOf('ate r$ 1') !== -1 || assets.indexOf('até 1') !== -1 || assets.indexOf('ate 1') !== -1;
+    var isQualified = Boolean(assets) && !isUnqualified;
+
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-    sheet.appendRow([new Date(), p.formType, p.need, p.name, p.whatsapp, p.email, p.country, p.assets, p.message]);
-    return out_({ ok: true });
+    sheet.appendRow([
+      new Date(),
+      p.formType,
+      p.need,
+      p.name,
+      p.whatsapp,
+      p.email,
+      p.country,
+      p.assets,
+      p.message,
+      isQualified ? 'Qualificado' : 'Não Qualificado'
+    ]);
+    return out_({ ok: true, qualified: isQualified });
   } catch (err) {
     return out_({ ok: false, error: String(err) });
   }
