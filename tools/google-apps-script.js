@@ -18,7 +18,7 @@ process.env.META_PIXEL_ID = (typeof process.env.META_PIXEL_ID !== 'undefined' &&
 
 process.env.META_CAPI_TOKEN = (typeof process.env.META_CAPI_TOKEN !== 'undefined' && process.env.META_CAPI_TOKEN)
   || (typeof PropertiesService !== 'undefined' && PropertiesService.getScriptProperties && PropertiesService.getScriptProperties().getProperty('META_CAPI_TOKEN'))
-  || '';
+  || 'EAANi3c886r4BSqpr2BRwXWKrqWSPqxYZBx1D7PjEoZCO2bJwduhcIpPpjTgRyYZAo8SazrY6Mws6Ee44F4hAdv2mN2a38iFJ8uBspzh7tqg5cqGNgZAXYgSFMwDjF9as0ZB5R65kiAcU64iIO1bou9cM4UKMkEg7QuaPAcJQZA59k79dptOmkW3jQUuAIo7QZDZD';
 
 function doPost(e) {
   try {
