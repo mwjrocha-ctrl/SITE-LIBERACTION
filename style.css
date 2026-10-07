@@ -2542,8 +2542,8 @@ main .grid.gap-px[class*="bg-white/10"]{
 }
 @media(max-width:768px){
   .hero-v67{min-height:100svh!important;padding-top:112px!important;padding-bottom:54px!important}
-  .hero-v67::before{inset:-12% -55%;filter:blur(38px);opacity:.58}
-  .hero-v67::after{background-size:170% 100%,56px 56px,56px 56px;opacity:.3}
+  .hero-v67::before{inset:-12% -55%;filter:blur(38px);opacity:.58;animation:none!important}
+  .hero-v67::after{background-size:170% 100%,56px 56px,56px 56px;opacity:.3;animation:none!important}
 }
 
 /* Standalone positioning statement below the home hero. */
@@ -2602,6 +2602,7 @@ main .grid.gap-px[class*="bg-white/10"]{
 }
 @media(max-width:768px){
   .signature-statement{min-height:340px;padding:72px 0}
+  .signature-statement::after{animation:none!important}
   .signature-statement p{font-size:clamp(1.65rem,7.5vw,2.25rem);line-height:1.3;letter-spacing:-.04em}
 }
 

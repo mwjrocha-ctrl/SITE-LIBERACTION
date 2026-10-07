@@ -724,17 +724,25 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
   function initTestimonialCarousel(){
     const carousel=document.querySelector('[data-testimonial-carousel]');
     if(!carousel||carousel.dataset.initialized==='true')return;
-    const track=carousel.querySelector('[data-testimonial-track]');
-    const page=track?.querySelector('[data-testimonial-page]');
-    if(!track||!page)return;
-    carousel.dataset.initialized='true';
-    const duplicate=page.cloneNode(true);
-    duplicate.setAttribute('aria-hidden','true');
-    duplicate.querySelectorAll('[id]').forEach(element=>element.removeAttribute('id'));
-    duplicate.querySelectorAll('.light-hover-card').forEach(el=>delete el.dataset.lightBound);
-    track.appendChild(duplicate);
-    carousel.classList.add('is-in-view');
-    window.bindCardLights?.();
+    const observer=new IntersectionObserver((entries,obs)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          obs.disconnect();
+          const track=carousel.querySelector('[data-testimonial-track]');
+          const page=track?.querySelector('[data-testimonial-page]');
+          if(!track||!page)return;
+          carousel.dataset.initialized='true';
+          const duplicate=page.cloneNode(true);
+          duplicate.setAttribute('aria-hidden','true');
+          duplicate.querySelectorAll('[id]').forEach(element=>element.removeAttribute('id'));
+          duplicate.querySelectorAll('.light-hover-card').forEach(el=>delete el.dataset.lightBound);
+          track.appendChild(duplicate);
+          carousel.classList.add('is-in-view');
+          window.bindCardLights?.();
+        }
+      });
+    },{rootMargin:'200px'});
+    observer.observe(carousel);
   }
   function updateScrollFX(){
     scrollFxRAF=null;
@@ -906,7 +914,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     canvas.style.width=w+'px'; canvas.style.height=h+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
   }
-  function draw(ts){
+  function draw(ts, loop = true){
     raf=0;
     if(document.hidden) return;
     const dt=last ? Math.min(100,ts-last) : 0; last=ts;
@@ -945,20 +953,47 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
         ctx.strokeStyle=n.accent===2?'rgba(155,140,255,.055)':'rgba(85,179,248,.055)';ctx.stroke();
       }
     });
-    timer=setTimeout(()=>{raf=requestAnimationFrame(draw)},1000/24);
+    if(loop && !reduced.matches){
+      timer=setTimeout(()=>{raf=requestAnimationFrame(draw)},1000/24);
+    }
   }
-  function start(){clearTimeout(timer);cancelAnimationFrame(raf);last=0;if(!document.hidden)raf=requestAnimationFrame(draw)}
-  function visibility(){if(document.hidden){clearTimeout(timer);cancelAnimationFrame(raf)}else start()}
+  let loopActive = false;
+  function start(){
+    if(loopActive || reduced.matches) return;
+    loopActive = true;
+    clearTimeout(timer);
+    cancelAnimationFrame(raf);
+    last=0;
+    if(!document.hidden) raf=requestAnimationFrame(draw);
+  }
+  function stop(){
+    loopActive = false;
+    clearTimeout(timer);
+    cancelAnimationFrame(raf);
+  }
+  function visibility(){if(document.hidden){stop()}else if(loopActive){start()}}
   seed(); resize(); scheduleParallax();
-  if('requestIdleCallback' in window){
-    requestIdleCallback(()=>start(),{timeout:1200});
-  }else{
-    setTimeout(start,400);
-  }
+  draw(0, false);
+
+  ['scroll','touchstart','pointerdown','click','keydown'].forEach(ev=>{
+    window.addEventListener(ev, start, {once:true, passive:true});
+  });
+  setTimeout(start, 5000);
+
+  let resizeTimer=0;
   addEventListener('resize',()=>{
     clearTimeout(resizeTimer);
-    resizeTimer=setTimeout(()=>{seed();resize();start()},150);
+    resizeTimer=setTimeout(()=>{
+      seed();
+      resize();
+      if(loopActive) start();
+      else draw(0, false);
+    },150);
   },{passive:true});
   document.addEventListener('visibilitychange',visibility);
-  reduced.addEventListener?.('change',()=>{scheduleParallax();start()});
+  reduced.addEventListener?.('change',()=>{
+    scheduleParallax();
+    if(reduced.matches) stop();
+    else draw(0, false);
+  });
 })();
