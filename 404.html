@@ -1,27 +1,38 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18493242073"></script>
+  <!-- Google tag (gtag.js) & Meta Pixel (lazy-loaded on idle/interaction for max performance) -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'AW-18493242073');
-  </script>
-  <!-- Meta Pixel Code -->
-  <script>
+
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
     if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
+    n.queue=[];}(window, document);
     fbq('init', '2176540853173706');
     fbq('track', 'PageView');
+
+    function _loadAnalytics(){
+      if(window._analyticsLoaded) return;
+      window._analyticsLoaded = true;
+      var g = document.createElement('script');
+      g.async = true;
+      g.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18493242073';
+      document.head.appendChild(g);
+
+      var f = document.createElement('script');
+      f.async = true;
+      f.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      document.head.appendChild(f);
+    }
+    setTimeout(_loadAnalytics, 7000);
+    ['scroll','touchstart','pointerdown','click','keydown'].forEach(function(ev){
+      window.addEventListener(ev, _loadAnalytics, { once: true, passive: true });
+    });
   </script>
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=2176540853173706&ev=PageView&noscript=1"
@@ -45,7 +56,7 @@
   <link rel="preload" href="assets/plus-jakarta-sans.153fc85b7029.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/inter.3100e775e861.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/site.1406c30b95d4.css" />
-  <script defer src="assets/app.997d097eb780.js"></script>
+  <script defer src="assets/app.ca3a0998f110.js"></script>
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body>

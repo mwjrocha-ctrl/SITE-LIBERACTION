@@ -1,27 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18493242073"></script>
+  <!-- Google tag (gtag.js) & Meta Pixel (lazy-loaded on idle/interaction for max performance) -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'AW-18493242073');
-  </script>
-  <!-- Meta Pixel Code -->
-  <script>
+
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
     if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
+    n.queue=[];}(window, document);
     fbq('init', '2176540853173706');
     fbq('track', 'PageView');
+
+    function _loadAnalytics(){
+      if(window._analyticsLoaded) return;
+      window._analyticsLoaded = true;
+      var g = document.createElement('script');
+      g.async = true;
+      g.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18493242073';
+      document.head.appendChild(g);
+
+      var f = document.createElement('script');
+      f.async = true;
+      f.src = 'https://connect.facebook.net/en_US/fbevents.js';
+      document.head.appendChild(f);
+    }
+    setTimeout(_loadAnalytics, 7000);
+    ['scroll','touchstart','pointerdown','click','keydown'].forEach(function(ev){
+      window.addEventListener(ev, _loadAnalytics, { once: true, passive: true });
+    });
   </script>
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=2176540853173706&ev=PageView&noscript=1"
@@ -123,7 +134,7 @@
   <link rel="preload" href="assets/plus-jakarta-sans.153fc85b7029.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/inter.3100e775e861.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/site.1406c30b95d4.css" />
-  <script defer src="assets/app.997d097eb780.js"></script>
+  <script defer src="assets/app.ca3a0998f110.js"></script>
   <link rel="describedby" type="text/plain" href="https://liberaction.io/llms.txt" />
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
@@ -175,10 +186,19 @@
 <div class="tl-progress" aria-hidden="true"><span :style="'width:'+progress+'%'"></span></div>
 <section class="tl-stage"><form class="tl-form" @submit.prevent="submit()" novalidate>
 <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden"><label>Não preencha este campo<input autocomplete="off" name="website" tabindex="-1" x-model="website"/></label></div>
-<div class="tl-step" data-tl-step="1" x-show="step===1&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
+<div class="tl-step" data-tl-step="1" x-show="step===1&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to">
 <p class="tl-count"><span>1</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h1 class="tl-question">Qual é a sua principal necessidade?</h1><p class="tl-hint">Escolha a opção que mais se aproxima do seu momento.</p>
-<div class="tl-options" role="radiogroup" aria-label="Qual é a sua principal necessidade?"><template :key="o" x-for="(o,i) in needs"><button class="tl-option" type="button" role="radio" :aria-checked="form.need===o" :class="form.need===o&&'is-active'" @click="pick('need',o)"><kbd x-text="letter(i)"></kbd><span x-text="o"></span><em class="tl-tick" aria-hidden="true">✓</em></button></template></div>
+<div class="tl-options" role="radiogroup" aria-label="Qual é a sua principal necessidade?">
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.need==='Saída fiscal do Brasil'" :class="form.need==='Saída fiscal do Brasil'&&'is-active'" @click="pick('need','Saída fiscal do Brasil')"><kbd>A</kbd><span>Saída fiscal do Brasil</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.need==='Planejamento tributário internacional'" :class="form.need==='Planejamento tributário internacional'&&'is-active'" @click="pick('need','Planejamento tributário internacional')"><kbd>B</kbd><span>Planejamento tributário internacional</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.need==='Estrutura offshore'" :class="form.need==='Estrutura offshore'&&'is-active'" @click="pick('need','Estrutura offshore')"><kbd>C</kbd><span>Estrutura offshore</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.need==='Regularização de criptoativos'" :class="form.need==='Regularização de criptoativos'&&'is-active'" @click="pick('need','Regularização de criptoativos')"><kbd>D</kbd><span>Regularização de criptoativos</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.need==='Movimentação de patrimônio em criptoativos'" :class="form.need==='Movimentação de patrimônio em criptoativos'&&'is-active'" @click="pick('need','Movimentação de patrimônio em criptoativos')"><kbd>E</kbd><span>Movimentação de patrimônio em criptoativos</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.need==='Planejamento sucessório'" :class="form.need==='Planejamento sucessório'&&'is-active'" @click="pick('need','Planejamento sucessório')"><kbd>F</kbd><span>Planejamento sucessório</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.need==='Internacionalização patrimonial'" :class="form.need==='Internacionalização patrimonial'&&'is-active'" @click="pick('need','Internacionalização patrimonial')"><kbd>G</kbd><span>Internacionalização patrimonial</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.need==='Outro'" :class="form.need==='Outro'&&'is-active'" @click="pick('need','Outro')"><kbd>H</kbd><span>Outro</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+</div>
 <div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="2" x-show="step===2&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>2</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Qual é o seu nome completo?</h2><p class="tl-hint">Para sabermos com quem estamos falando.</p>
@@ -198,14 +218,18 @@
       <input type="text" class="tl-dropdown-search-input tl-phone-search-input" placeholder="Buscar país, código ou DDD..." x-model="phoneSearch" @keydown.enter.prevent="selectFirstPhoneCountry()" @keydown.escape="phoneDropdownOpen=false" />
     </div>
     <div class="tl-dropdown-list">
-      <template :key="c.code + c.dial + c.name" x-for="c in filteredPhoneCountries()">
-        <button type="button" class="tl-dropdown-item" :class="phoneCountry.code===c.code&&phoneCountry.dial===c.dial&&'is-selected'" @click="choosePhoneCountry(c)">
-          <span class="flag" x-text="c.flag"></span>
-          <span class="name" x-text="c.name"></span>
-          <span class="dial" x-text="c.dial"></span>
-        </button>
+      <template x-if="phoneDropdownOpen">
+        <div>
+          <template :key="c.code + c.dial + c.name" x-for="c in filteredPhoneCountries()">
+            <button type="button" class="tl-dropdown-item" :class="phoneCountry.code===c.code&&phoneCountry.dial===c.dial&&'is-selected'" @click="choosePhoneCountry(c)">
+              <span class="flag" x-text="c.flag"></span>
+              <span class="name" x-text="c.name"></span>
+              <span class="dial" x-text="c.dial"></span>
+            </button>
+          </template>
+          <div class="tl-dropdown-empty" x-show="filteredPhoneCountries().length===0">Nenhum país encontrado</div>
+        </div>
       </template>
-      <div class="tl-dropdown-empty" x-show="filteredPhoneCountries().length===0">Nenhum país encontrado</div>
     </div>
   </div>
   <input class="tl-input tl-phone-input" type="tel" autocomplete="tel" :placeholder="phonePlaceholder" :value="rawPhone" @input="onPhoneInput($event)" aria-label="Qual é o seu WhatsApp?" />
@@ -228,21 +252,32 @@
   </div>
   <div class="tl-dropdown-menu tl-country-menu" x-show="countryDropdownOpen" x-transition x-cloak>
     <div class="tl-dropdown-list">
-      <div class="tl-dropdown-section" x-show="!countryQuery.trim()">Principais países</div>
-      <template :key="c.code + c.name" x-for="(c, idx) in filteredCountries()">
-        <button type="button" class="tl-dropdown-item" :class="countryHighlightIndex===idx&&'is-highlighted'" @click="chooseCountry(c)">
-          <span class="flag" x-text="c.flag"></span>
-          <span class="name" x-text="c.name"></span>
-        </button>
+      <template x-if="countryDropdownOpen">
+        <div>
+          <div class="tl-dropdown-section" x-show="!countryQuery.trim()">Principais países</div>
+          <template :key="c.code + c.name" x-for="(c, idx) in filteredCountries()">
+            <button type="button" class="tl-dropdown-item" :class="countryHighlightIndex===idx&&'is-highlighted'" @click="chooseCountry(c)">
+              <span class="flag" x-text="c.flag"></span>
+              <span class="name" x-text="c.name"></span>
+            </button>
+          </template>
+          <div class="tl-dropdown-empty" x-show="filteredCountries().length===0">Nenhum país encontrado. Pressione Enter para continuar com o texto digitado.</div>
+        </div>
       </template>
-      <div class="tl-dropdown-empty" x-show="filteredCountries().length===0">Nenhum país encontrado. Pressione Enter para continuar com o texto digitado.</div>
     </div>
   </div>
 </div>
 <div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="6" x-show="step===6&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>6</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Qual é o seu patrimônio aproximado?</h2><p class="tl-hint">Informação confidencial, usada apenas para direcionar o atendimento.</p>
-<div class="tl-options" role="radiogroup" aria-label="Qual é o seu patrimônio aproximado?"><template :key="o" x-for="(o,i) in assetsOptions"><button class="tl-option" type="button" role="radio" :aria-checked="form.assets===o" :class="form.assets===o&&'is-active'" @click="pick('assets',o)"><kbd x-text="letter(i)"></kbd><span x-text="o"></span><em class="tl-tick" aria-hidden="true">✓</em></button></template></div>
+<div class="tl-options" role="radiogroup" aria-label="Qual é o seu patrimônio aproximado?">
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.assets==='Até R$ 1 milhão'" :class="form.assets==='Até R$ 1 milhão'&&'is-active'" @click="pick('assets','Até R$ 1 milhão')"><kbd>A</kbd><span>Até R$ 1 milhão</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.assets==='R$ 1 milhão a R$ 3 milhões'" :class="form.assets==='R$ 1 milhão a R$ 3 milhões'&&'is-active'" @click="pick('assets','R$ 1 milhão a R$ 3 milhões')"><kbd>B</kbd><span>R$ 1 milhão a R$ 3 milhões</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.assets==='R$ 3 milhões a R$ 10 milhões'" :class="form.assets==='R$ 3 milhões a R$ 10 milhões'&&'is-active'" @click="pick('assets','R$ 3 milhões a R$ 10 milhões')"><kbd>C</kbd><span>R$ 3 milhões a R$ 10 milhões</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.assets==='R$ 10 milhões a R$ 50 milhões'" :class="form.assets==='R$ 10 milhões a R$ 50 milhões'&&'is-active'" @click="pick('assets','R$ 10 milhões a R$ 50 milhões')"><kbd>D</kbd><span>R$ 10 milhões a R$ 50 milhões</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.assets==='Acima de R$ 50 milhões'" :class="form.assets==='Acima de R$ 50 milhões'&&'is-active'" @click="pick('assets','Acima de R$ 50 milhões')"><kbd>E</kbd><span>Acima de R$ 50 milhões</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+  <button class="tl-option" type="button" role="radio" :aria-checked="form.assets==='Prefiro informar durante o atendimento'" :class="form.assets==='Prefiro informar durante o atendimento'&&'is-active'" @click="pick('assets','Prefiro informar durante o atendimento')"><kbd>F</kbd><span>Prefiro informar durante o atendimento</span><em class="tl-tick" aria-hidden="true">✓</em></button>
+</div>
 <div class="tl-actions"><button class="button-dark" type="button" @click="next()">OK <i data-lucide="check" aria-hidden="true"></i></button><span class="tl-key">pressione <b>Enter ↵</b></span></div></div><div class="tl-step" data-tl-step="7" x-show="step===7&&!sent" x-transition:enter="tl-enter" x-transition:enter-start="tl-enter-from" x-transition:enter-end="tl-enter-to" x-cloak>
 <p class="tl-count"><span>7</span><i data-lucide="arrow-right" aria-hidden="true"></i></p>
 <h2 class="tl-question">Conte resumidamente o que você precisa resolver. <small>(opcional)</small></h2><p class="tl-hint">Quanto mais contexto, mais objetiva será a primeira análise.</p>

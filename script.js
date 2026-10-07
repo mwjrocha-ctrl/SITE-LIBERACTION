@@ -394,14 +394,14 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     },
     filteredPhoneCountries(){
       const q = normStr(this.phoneSearch);
-      if(!q) return COUNTRIES_DATA;
+      if(!q) return COUNTRIES_DATA.slice(0, 45);
       return COUNTRIES_DATA.filter(c => {
         if(normStr(c.name).includes(q)) return true;
         if(c.dial.replace(/\D/g,'').includes(q.replace(/\D/g,'')) && q.replace(/\D/g,'').length>0) return true;
         if(normStr(c.code).includes(q)) return true;
         if(c.aliases && c.aliases.some(a => normStr(a).includes(q) || q.includes(normStr(a)))) return true;
         return false;
-      });
+      }).slice(0, 45);
     },
     choosePhoneCountry(c){
       this.phoneCountry = c;
@@ -451,13 +451,13 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
 
     filteredCountries(){
       const q = normStr(this.countryQuery);
-      if(!q) return COUNTRIES_DATA;
+      if(!q) return COUNTRIES_DATA.slice(0, 45);
       return COUNTRIES_DATA.filter(c => {
         if(normStr(c.name).includes(q)) return true;
         if(normStr(c.code) === q) return true;
         if(c.aliases && c.aliases.some(a => normStr(a).includes(q))) return true;
         return false;
-      });
+      }).slice(0, 45);
     },
     openCountryDropdown(){
       this.countryDropdownOpen = true;
