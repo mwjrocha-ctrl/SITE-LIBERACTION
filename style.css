@@ -1359,10 +1359,21 @@ main,footer{position:relative;z-index:1}
 .form-main{background:radial-gradient(500px 360px at 92% 6%,rgba(85,179,248,.055),transparent 68%),#08090D!important}
 .form-side{background:linear-gradient(145deg,#EDF6FA 0%,#E9EEF8 56%,#E7E2F7 100%)!important}
 
+/* Hero and critical above-the-fold titles render in solid crisp white on first paint without mask/clip delays */
+.hero .hero-v62-title,
+.inner-hero .inner-title-v62,
+.inner-hero .inner-title-v612,
+.inner-hero .headline,
+.hero h1 {
+  background: none !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
 /* Gradients now participate in typography and accents instead of pure grayscale. */
-.hero-v62-title,.inner-title-v62,.crypto-page-title,
+.crypto-page-title,
 .section h2.headline:not(.scroll-ink),.section h2.display.text-5xl:not(.scroll-ink),
-.page-cta-card [data-title],.inner-title-v612{
+.page-cta-card [data-title]{
   background:linear-gradient(108deg,#FFFFFF 0%,#EDF8FF 42%,#C9D9F2 72%,#AFA8E8 100%)!important;
   -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
 }

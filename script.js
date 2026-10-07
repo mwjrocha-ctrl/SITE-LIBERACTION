@@ -44,7 +44,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     routeHref(route){return String(route||'').replace(/^\/+/, '') + '/'},
     parseRoute(){let p=location.pathname.replace(/\/index\.html$/,'').replace(/\/+$/,'');if(!p)p='/';if(p==='/pt/conteudos')p='/pt/contato';return p.startsWith('/pt')?p:'/pt'},
     init(){this.route=document.body?.dataset?.currentRoute || this.parseRoute();this.$nextTick(()=>this.afterRoute())},
-    afterRoute(){window.lucide?.createIcons();initReveals();initScrollFX()}
+    afterRoute(){if(typeof initPageFeatures==='function'&&!appFeaturesReady)initPageFeatures();else{window.lucide?.createIcons();initReveals();initScrollFX()}}
   }}
 
   function offshoreExplorer(){return{selected:0,vehicles:[
@@ -634,8 +634,8 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
 
   const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revealObserver.unobserve(e.target)}}),{threshold:.12});
   function initReveals(){
-    const nodes=[...document.querySelectorAll('.reveal')].filter(el=>el.offsetParent!==null);
-    nodes.forEach(n=>{if(!n.classList.contains('in'))revealObserver.observe(n)});
+    const nodes=[...document.querySelectorAll('.reveal:not(.in)')].filter(el=>el.offsetParent!==null);
+    nodes.forEach(n=>revealObserver.observe(n));
   }
 
   let globeRAF=null;
@@ -663,7 +663,20 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
   const scrollTitles=new Map();
   const visibleTitles=new Set();
   const titleObserver=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{if(entry.isIntersecting)visibleTitles.add(entry.target);else visibleTitles.delete(entry.target)});
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const el=entry.target;
+        const state=scrollTitles.get(el);
+        if(state&&!state.chars){
+          el.classList.add('scroll-ink');
+          splitCharactersForScroll(el);
+          state.chars=[...el.querySelectorAll('.scroll-char')];
+        }
+        visibleTitles.add(el);
+      }else{
+        visibleTitles.delete(entry.target);
+      }
+    });
     scheduleScrollFX();
   },{rootMargin:'100px 0px'});
   function splitCharactersForScroll(el){
@@ -704,12 +717,9 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     const titles=[...document.querySelectorAll(selector)].filter(el=>el.offsetParent!==null);
     titles.forEach(el=>{
       if(scrollTitles.has(el))return;
-      el.classList.add('scroll-ink');
-      splitCharactersForScroll(el);
-      scrollTitles.set(el,{chars:[...el.querySelectorAll('.scroll-char')],progress:-1});
+      scrollTitles.set(el,{chars:null,progress:-1});
       titleObserver.observe(el);
     });
-    updateScrollFX();
   }
   function initTestimonialCarousel(){
     const carousel=document.querySelector('[data-testimonial-carousel]');
@@ -733,6 +743,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     measurements.forEach(([el,r])=>{
       if(el.offsetParent===null)return;
       const state=scrollTitles.get(el);
+      if(!state||!state.chars)return;
       const chars=state.chars;
       const n=chars.length;
       if(!n)return;
@@ -762,13 +773,21 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
   window.addEventListener('resize',scheduleScrollFX,{passive:true});
   
 
-  document.addEventListener('DOMContentLoaded',()=>{
+  let appFeaturesReady=false;
+  function initPageFeatures(){
+    if(appFeaturesReady)return;
+    appFeaturesReady=true;
     initReveals();
     initScrollFX();
     initTestimonialCarousel();
     window.lucide?.createIcons();
     document.fonts?.ready.then(scheduleScrollFX);
-  });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initPageFeatures,{once:true});
+  }else{
+    initPageFeatures();
+  }
 
 
 /* ===== Extracted script block 2 ===== */
@@ -930,8 +949,12 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
   }
   function start(){clearTimeout(timer);cancelAnimationFrame(raf);last=0;if(!document.hidden)raf=requestAnimationFrame(draw)}
   function visibility(){if(document.hidden){clearTimeout(timer);cancelAnimationFrame(raf)}else start()}
-  seed(); resize(); scheduleParallax(); start();
-  let resizeTimer=0;
+  seed(); resize(); scheduleParallax();
+  if('requestIdleCallback' in window){
+    requestIdleCallback(()=>start(),{timeout:1200});
+  }else{
+    setTimeout(start,400);
+  }
   addEventListener('resize',()=>{
     clearTimeout(resizeTimer);
     resizeTimer=setTimeout(()=>{seed();resize();start()},150);

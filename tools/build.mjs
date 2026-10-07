@@ -43,7 +43,7 @@ const appPath=await asset('app','js',bundle.outputFiles[0].text+'\n'+app.code+'\
 
 let fonts='';
 const fontPaths={};
-for(const [slug,family,style] of [['inter','Inter','normal'],['plus-jakarta-sans','Plus Jakarta Sans','normal'],['cormorant-garamond','Cormorant Garamond','italic']]){
+for(const [slug,family,style] of [['inter','Inter','normal'],['plus-jakarta-sans','Plus Jakarta Sans','normal']]){
   const file=`node_modules/@fontsource-variable/${slug}/files/${slug}-latin-wght-${style}.woff2`;
   const path=await asset(slug,'woff2',await readFile(file));
   fontPaths[slug]=path;

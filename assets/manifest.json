@@ -1,10 +1,9 @@
 {
-  "css": "assets/site.29bbbf9726d2.css",
-  "js": "assets/app.596842650a4a.js",
+  "css": "assets/site.1406c30b95d4.css",
+  "js": "assets/app.997d097eb780.js",
   "fonts": {
     "inter": "assets/inter.3100e775e861.woff2",
-    "plus-jakarta-sans": "assets/plus-jakarta-sans.153fc85b7029.woff2",
-    "cormorant-garamond": "assets/cormorant-garamond.6f2f5c3b1abc.woff2"
+    "plus-jakarta-sans": "assets/plus-jakarta-sans.153fc85b7029.woff2"
   },
   "images": {
     "imagens/foto-victoria.jpg": {
