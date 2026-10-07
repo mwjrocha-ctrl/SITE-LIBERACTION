@@ -879,6 +879,8 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     root.style.setProperty('--tech-my', `${(dy * -12).toFixed(1)}px`);
     root.style.setProperty('--tech-sy', `${Math.max(-18, Math.min(18, -y * .006)).toFixed(1)}px`);
   }
+  function scheduleParallax(){ if(!scrollRAF) scrollRAF=requestAnimationFrame(applyParallax); }
+
   const canvas = document.getElementById('techAtmosphereCanvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d',{alpha:true});
