@@ -104,7 +104,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       formData.append('event_source_url',window.location.href);
 
       try{
-        const url='https://script.google.com/macros/s/AKfycbxeetsC3WEJWW6KTZxkLcDwobfGlHC7XUO0qDYtGhlD45pa57HcoBv1II4EXOgiGOh3/exec';
+        const url='https://script.google.com/macros/s/AKfycbyeoX_kKGYEhr_1rc7t5yZDTtBgu6phBakDdHIEa4W5n0LU5PtbFJPOnL66My7PnSxR/exec';
         if(!url.includes('COLOQUE_SUA_URL')) await fetch(url,{method:'POST',body:formData,mode:'no-cors'});
       }catch(e){console.error(e);}
 
@@ -128,7 +128,7 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
 
   // Chave pública (site key) do Google reCAPTCHA v3. Gere em https://www.google.com/recaptcha/admin
   const RECAPTCHA_SITE_KEY='COLOQUE_SUA_SITE_KEY';
-  const FORM_ENDPOINT='https://script.google.com/macros/s/AKfycbxeetsC3WEJWW6KTZxkLcDwobfGlHC7XUO0qDYtGhlD45pa57HcoBv1II4EXOgiGOh3/exec';
+  const FORM_ENDPOINT='https://script.google.com/macros/s/AKfycbyeoX_kKGYEhr_1rc7t5yZDTtBgu6phBakDdHIEa4W5n0LU5PtbFJPOnL66My7PnSxR/exec';
   let recaptchaPromise=null;
   function loadRecaptcha(){
     if(RECAPTCHA_SITE_KEY.includes('COLOQUE'))return Promise.resolve(false);
