@@ -879,7 +879,11 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
     root.style.setProperty('--tech-my', `${(dy * -12).toFixed(1)}px`);
     root.style.setProperty('--tech-sy', `${Math.max(-18, Math.min(18, -y * .006)).toFixed(1)}px`);
   }
-  function scheduleParallax(){ if(!scrollRAF) scrollRAF=requestAnimationFrame(applyParallax); }
+  const canvas = document.getElementById('techAtmosphereCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d',{alpha:true});
+  if(!ctx) return;
+
   addEventListener('pointermove', e => {
     pointerX = Math.max(0,Math.min(1,e.clientX / Math.max(1,innerWidth)));
     pointerY = Math.max(0,Math.min(1,e.clientY / Math.max(1,innerHeight)));
@@ -888,10 +892,6 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
   addEventListener('scroll',scheduleParallax,{passive:true});
   addEventListener('resize',scheduleParallax,{passive:true});
 
-  const canvas = document.getElementById('techAtmosphereCanvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d',{alpha:true});
-  if(!ctx) return;
   let w=0,h=0,dpr=1,raf=0,last=0,timer=0,elapsed=0;
   const nodes=[];
 
@@ -978,7 +978,6 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
   ['scroll','touchstart','pointerdown','click','keydown'].forEach(ev=>{
     window.addEventListener(ev, start, {once:true, passive:true});
   });
-  setTimeout(start, 5000);
 
   let resizeTimer=0;
   addEventListener('resize',()=>{
