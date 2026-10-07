@@ -247,8 +247,19 @@ function sha256Hex(str) {
 }
 
 /**
- * Função de teste direto: selecione esta função no menu superior do Google Apps Script
- * e clique em "Executar" para testar o envio para a Meta CAPI na hora e ver a resposta no log.
+ * 1. EXECUTE ESTA FUNÇÃO PRIMEIRO se der erro de permissão:
+ * Como ela não tem try/catch, o Google Apps Script é FORÇADO a abrir
+ * a janela de "Autorização necessária" (Revisar permissões > Permitir).
+ */
+function forcarAutorizacao() {
+  Logger.log('Testando conexão externa com a Meta...');
+  var res = UrlFetchApp.fetch('https://graph.facebook.com');
+  Logger.log('Permissão concedida com sucesso! Código: ' + res.getResponseCode());
+}
+
+/**
+ * 2. Função de teste de envio:
+ * Envia um lead simulado para a Meta CAPI e exibe a resposta no log.
  */
 function testarEnvioMeta() {
   Logger.log('Iniciando teste de envio para Meta CAPI...');
@@ -262,3 +273,4 @@ function testarEnvioMeta() {
   sendMetaCapiLead(mockP, null);
   Logger.log('Teste concluído. Verifique os logs acima.');
 }
+
