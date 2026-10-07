@@ -245,3 +245,20 @@ function sha256Hex(str) {
   }
   return '';
 }
+
+/**
+ * Função de teste direto: selecione esta função no menu superior do Google Apps Script
+ * e clique em "Executar" para testar o envio para a Meta CAPI na hora e ver a resposta no log.
+ */
+function testarEnvioMeta() {
+  Logger.log('Iniciando teste de envio para Meta CAPI...');
+  var mockP = {
+    email: 'teste@liberaction.io',
+    whatsapp: '+55 11 99999-9999',
+    name: 'Teste Manual Liberaction',
+    need: 'Saída fiscal do Brasil',
+    assets: 'R$ 3 milhões a R$ 10 milhões'
+  };
+  sendMetaCapiLead(mockP, null);
+  Logger.log('Teste concluído. Verifique os logs acima.');
+}
