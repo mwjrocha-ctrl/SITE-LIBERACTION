@@ -47,17 +47,23 @@ function doPost(e) {
     var isUnqualified = assets.indexOf('até r$ 1') !== -1 || assets.indexOf('ate r$ 1') !== -1 || assets.indexOf('até 1') !== -1 || assets.indexOf('ate 1') !== -1;
     var isQualified = Boolean(assets) && !isUnqualified;
 
+    // Formatação do WhatsApp como texto para evitar que o '+' gere fórmula inválida (#ERROR!) na planilha
+    var whatsappText = (p.whatsapp || '').toString().trim();
+    if (whatsappText && !whatsappText.startsWith("'")) {
+      whatsappText = "'" + whatsappText;
+    }
+
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
     sheet.appendRow([
       new Date(),
-      p.formType,
-      p.need,
-      p.name,
-      p.whatsapp,
-      p.email,
-      p.country,
-      p.assets,
-      p.message,
+      p.formType || 'Diagnóstico',
+      p.name || '',
+      p.email || '',
+      whatsappText,
+      p.country || '',
+      p.need || p.subject || '',
+      p.assets || '',
+      p.message || '',
       isQualified ? 'Qualificado' : 'Não Qualificado'
     ]);
 
