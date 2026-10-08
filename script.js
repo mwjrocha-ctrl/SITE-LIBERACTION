@@ -4,8 +4,8 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
   class LegalPage extends HTMLElement{connectedCallback(){if(this.children.length)return;const t=document.getElementById('legal-page-template').content.cloneNode(true);t.querySelector('[data-title]').textContent=this.getAttribute('title')||'';this.appendChild(t)}}
   customElements.define('inner-hero',InnerHero);customElements.define('page-cta',PageCta);customElements.define('legal-page',LegalPage);
 
-  function siteApp(){return{
-    route:'/pt',
+  function siteNavigation(){return{
+    route:document.body?.dataset?.currentRoute||'/pt',
     solutionLinks:[
       {name:'Planejamento Patrimonial Internacional',route:'/pt/planejamento-patrimonial-internacional',icon:'landmark',desc:'Patrimônio, residência fiscal e arquitetura internacional.'},
       {name:'Saída Fiscal do Brasil',route:'/pt/saida-fiscal-do-brasil',icon:'plane',desc:'Organização antes, durante e depois da mudança.'},
@@ -13,6 +13,13 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       {name:'Regularização de Criptoativos',route:'/pt/regularizacao-fiscal-criptoativos',icon:'file-check-2',desc:'Reconstrução e organização do histórico patrimonial.'},
       {name:'Planejamento para Criptoativos',route:'/pt/criptoativos',icon:'blocks',desc:'Integração entre patrimônio digital e estrutura global.'}
     ],
+    routeHref(route){return String(route||'').replace(/^\/+/, '') + '/'},
+    init(){this.$nextTick(()=>window.lucide?.createIcons())}
+  }}
+
+  function siteApp(){return{
+    ...siteNavigation(),
+    route:'/pt',
     featuredSolutions:[
       {name:'Planejamento Patrimonial e Tributário Internacional',route:'/pt/planejamento-patrimonial-internacional',body:'Proteção de bens, corte legal de impostos e sucessão familiar estruturada com ferramentas internacionais e digitais.'},
       {name:'Saída Fiscal do Brasil',route:'/pt/saida-fiscal-do-brasil',body:'Desvinculação oficial da Receita Federal com zero imposto em ganhos futuros e eliminação definitiva da bitributação.'},
@@ -41,7 +48,6 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
       {title:'Definir estratégia',body:'Desenho de estratégia de elisão fiscal antes da próxima movimentação.',icon:'route'}
     ],
     regularizationSteps:['Identificar ativos','Analisar movimentações','Organizar documentos','Entender operações relevantes','Avaliar obrigações existentes','Definir estratégia adequada'],
-    routeHref(route){return String(route||'').replace(/^\/+/, '') + '/'},
     parseRoute(){let p=location.pathname.replace(/\/index\.html$/,'').replace(/\/+$/,'');if(!p)p='/';if(p==='/pt/conteudos')p='/pt/contato';return p.startsWith('/pt')?p:'/pt'},
     init(){this.route=document.body?.dataset?.currentRoute || this.parseRoute();this.$nextTick(()=>this.afterRoute())},
     afterRoute(){if(typeof initPageFeatures==='function'&&!appFeaturesReady)initPageFeatures();else{window.lucide?.createIcons();initReveals();initScrollFX()}}
@@ -341,6 +347,11 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
 
     init(){
       this.$el.addEventListener('focusin',()=>loadRecaptcha(),{once:true});
+      const firstInput=window.contactFirstInput;
+      if(firstInput?.need){
+        this.form.need=firstInput.need;
+        if(firstInput.advance)this.$nextTick(()=>this.next());
+      }
       this.focusStep();
     },
     checkQualified(assets){

@@ -25,6 +25,20 @@ npm run build
 node tools/package-site.mjs
 ```
 
+Para medir o carregamento e verificar o formulário, deixe `npm run preview`
+aberto e execute `npm run check:performance` e `npm run audit:performance`.
+As verificações de envio usam um backend simulado e não criam leads reais.
+Os relatórios ficam em `reports/performance/`. As ferramentas usam o Chrome
+instalado; `CHROME_PATH` permite indicar outro caminho para o executável.
+
+O build entrega os ícones estáticos no HTML e extrai o CSS inicial da mesma
+folha usada pelo site. Contato recebe JavaScript próprio e seus estilos completos
+no HTML para exibir a primeira pergunta sem esperar uma folha externa. A escolha
+e o botão OK funcionam mesmo durante o download da aplicação: as ações são
+preservadas e aplicadas quando o formulário inicia. Os eventos de rastreamento
+continuam em fila; os scripts externos carregam após o carregamento da página,
+na primeira interação ou após sete segundos.
+
 Acompanhe a execução em [Actions](https://github.com/mwjrocha-ctrl/SITE-LIBERACTION/actions/workflows/pages.yml).
 A publicação só está concluída quando o job `deploy` termina com sucesso.
 O arquivo público [deployment.json](https://liberaction.io/deployment.json)

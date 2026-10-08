@@ -9,7 +9,7 @@ const output = resolve(root, '_site');
 assert.equal(output, root + sep + '_site', 'A saída deve ficar dentro do projeto.');
 
 const manifest = JSON.parse(await readFile('assets/manifest.json', 'utf8'));
-for (const asset of [manifest.js, manifest.css]) {
+for (const asset of [manifest.js, manifest.css, manifest.contact.js, manifest.contact.css]) {
   const digest = createHash('sha256').update(await readFile(asset)).digest('hex').slice(0, 12);
   assert.ok(asset.includes(`.${digest}.`), `Asset modificado sem atualizar o hash: ${asset}`);
 }
@@ -34,8 +34,9 @@ for (const page of pages) {
     continue;
   }
   const scripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)].map(match => match[1]).filter(src => !src.includes('googletagmanager.com'));
-  assert.deepEqual(scripts, [manifest.js], `JavaScript desatualizado em ${page}`);
-  assert.ok(html.includes(`href="${manifest.css}"`), `CSS desatualizado em ${page}`);
+  const assets = page === 'pt/contato/index.html' ? manifest.contact : manifest;
+  assert.deepEqual(scripts, [assets.js], `JavaScript desatualizado em ${page}`);
+  assert.ok(html.includes(page === 'pt/contato/index.html' ? `data-stylesheet="${assets.css}"` : `href="${assets.css}"`), `CSS desatualizado em ${page}`);
   for (const asset of new Set(html.match(/(?:assets|imagens)\/[a-zA-Z0-9._/-]+\.(?:js|css|woff2|webp|avif|svg|png|jpg)/g))) {
     await readFile(asset);
   }
@@ -53,6 +54,7 @@ await writeFile(resolve(output, 'deployment.json'), JSON.stringify({
   commit: process.env.GITHUB_SHA || null,
   builtAt: new Date().toISOString(),
   js: manifest.js,
-  css: manifest.css
+  css: manifest.css,
+  contact: manifest.contact
 }, null, 2) + '\n');
 console.log(`Site validado: ${pages.length} páginas; publicação preparada em _site/.`);

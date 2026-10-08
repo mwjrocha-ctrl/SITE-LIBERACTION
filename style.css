@@ -7,6 +7,9 @@
 }
 
 /* Hero content is visible on first paint, without waiting for JavaScript. */
+.container-x{padding-inline:24px}
+.hero{padding-inline:24px}
+@media(max-width:768px){.container-x,.hero{padding-inline:20px}}
 .hero .reveal,.inner-hero .reveal{opacity:1!important;transform:none!important;transition:none!important}
 .hero h1.hero-v62-title,.inner-hero h1.inner-title-v612{background:none!important;color:#F6F9FC!important;-webkit-text-fill-color:#F6F9FC!important}
 
