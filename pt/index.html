@@ -1,38 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
 <head>
-  <!-- Google tag (gtag.js) & Meta Pixel (lazy-loaded on idle/interaction for max performance) -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18493242073"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'AW-18493242073');
+  </script>
 
+  <!-- Meta Pixel Code -->
+  <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
     if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];}(window, document);
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '2176540853173706');
     fbq('track', 'PageView');
-
-    function _loadAnalytics(){
-      if(window._analyticsLoaded) return;
-      window._analyticsLoaded = true;
-      var g = document.createElement('script');
-      g.async = true;
-      g.src = 'https://www.googletagmanager.com/gtag/js?id=AW-18493242073';
-      document.head.appendChild(g);
-
-      var f = document.createElement('script');
-      f.async = true;
-      f.src = 'https://connect.facebook.net/en_US/fbevents.js';
-      document.head.appendChild(f);
-    }
-    setTimeout(_loadAnalytics, 7000);
-    ['scroll','touchstart','pointerdown','click','keydown'].forEach(function(ev){
-      window.addEventListener(ev, _loadAnalytics, { once: true, passive: true });
-    });
   </script>
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=2176540853173706&ev=PageView&noscript=1"
