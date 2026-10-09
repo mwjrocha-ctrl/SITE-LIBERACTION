@@ -3,7 +3,7 @@
   "js": "assets/app.8bec72588f75.js",
   "contact": {
     "css": "assets/contact.1b8073cb74c3.css",
-    "js": "assets/contact.6bfbc7d30d04.js"
+    "js": "assets/contact.8642e6942776.js"
   },
   "fonts": {
     "inter": "assets/inter.3100e775e861.woff2",
@@ -206,7 +206,7 @@
   },
   "icons": {
     "logo": "assets/logo.fd06dd25742f.svg",
-    "favicon-light-mode": "assets/favicon-light-mode.8ca4ce2ea9bc.png",
-    "favicon-dark-mode": "assets/favicon-dark-mode.7980dfe88b5f.png"
+    "favicon-light-mode": "assets/favicon-light-mode.e9b0ab5ba789.png",
+    "favicon-dark-mode": "assets/favicon-dark-mode.5ebd2149dbf4.png"
   }
 }

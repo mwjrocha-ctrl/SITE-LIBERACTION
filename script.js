@@ -113,6 +113,10 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
         const urlParams=new URLSearchParams(window.location.search);
         const testCode=urlParams.get('test_event_code');
         if(testCode)formData.append('test_event_code',testCode);
+        ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(utm => {
+          const val = urlParams.get(utm);
+          if (val) formData.append(utm, val);
+        });
       }catch(_){}
 
       try{
@@ -608,6 +612,10 @@ class InnerHero extends HTMLElement{connectedCallback(){if(this.children.length)
           const urlParams=new URLSearchParams(window.location.search);
           const testCode=urlParams.get('test_event_code');
           if(testCode)formData.append('test_event_code',testCode);
+          ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(utm => {
+            const val = urlParams.get(utm);
+            if (val) formData.append(utm, val);
+          });
         }catch(_){}
 
         if(await loadRecaptcha()){
